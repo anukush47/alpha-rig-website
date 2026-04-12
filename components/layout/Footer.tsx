@@ -239,7 +239,7 @@ export default function Footer() {
         style={{ maxWidth: "1200px" }}
       >
         {/* 4-column grid */}
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4" style={{ marginBottom: "48px" }}>
 
           {/* Col 1 — Brand */}
           <div className="flex flex-col gap-5">
@@ -347,23 +347,6 @@ export default function Footer() {
                   hello@alpharig.in
                 </a>
               </li>
-              <li>
-                <a
-                  href="tel:+919999999999"
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "12px",
-                    color: "rgba(255,255,255,0.35)",
-                    letterSpacing: "0.04em",
-                    transition: "color 0.18s",
-                  }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#ffffff"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.35)"; }}
-                >
-                  +91 99999 99999
-                </a>
-              </li>
-
               {/* Glass CTA button */}
               <li>
                 <Link
@@ -405,6 +388,113 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
+          </div>
+        </div>
+
+        {/* ── Our Verticals ─────────────────────────────────────────────────── */}
+        <div
+          style={{
+            borderTop: "1px solid rgba(255,255,255,0.06)",
+            paddingTop: "40px",
+            marginBottom: "40px",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "9px",
+              letterSpacing: "3px",
+              color: "rgba(255,255,255,0.25)",
+              textTransform: "uppercase",
+              marginBottom: "20px",
+            }}
+          >
+            Our Verticals
+          </p>
+          <div className="flex flex-wrap gap-3">
+            {/* Alpha Zen-X — links out */}
+            <a
+              href="https://alphazenx.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "10px 20px",
+                borderRadius: "10px",
+                backdropFilter: "blur(16px)",
+                WebkitBackdropFilter: "blur(16px)",
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.09)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
+                fontFamily: "var(--font-body)",
+                fontWeight: 600,
+                fontSize: "13px",
+                letterSpacing: "0.04em",
+                color: "rgba(255,255,255,0.55)",
+                textDecoration: "none",
+                transition: "color 0.2s, background 0.2s, border-color 0.2s",
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.color = "#ffffff";
+                el.style.background = "rgba(255,255,255,0.08)";
+                el.style.borderColor = "rgba(255,255,255,0.18)";
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.color = "rgba(255,255,255,0.55)";
+                el.style.background = "rgba(255,255,255,0.04)";
+                el.style.borderColor = "rgba(255,255,255,0.09)";
+              }}
+            >
+              Alpha Zen-X
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}>
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+            </a>
+
+            {/* Codexa Syndicates — no external link yet */}
+            {[
+              { label: "Codexa Syndicates" },
+              { label: "Alpha Brew" },
+            ].map(({ label }) => (
+              <div
+                key={label}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "10px 20px",
+                  borderRadius: "10px",
+                  backdropFilter: "blur(16px)",
+                  WebkitBackdropFilter: "blur(16px)",
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.09)",
+                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
+                  fontFamily: "var(--font-body)",
+                  fontWeight: 600,
+                  fontSize: "13px",
+                  letterSpacing: "0.04em",
+                  color: "rgba(255,255,255,0.35)",
+                }}
+              >
+                {label}
+                <span
+                  style={{
+                    marginLeft: "10px",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "8px",
+                    letterSpacing: "1.5px",
+                    color: "rgba(255,255,255,0.2)",
+                  }}
+                >
+                  COMING SOON
+                </span>
+              </div>
+            ))}
           </div>
         </div>
 
