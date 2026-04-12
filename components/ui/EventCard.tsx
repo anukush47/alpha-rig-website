@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useCursorGlow } from "@/lib/useCursorGlow";
+import { trackEvent } from "@/lib/analytics";
 import type { EventSummary } from "@/lib/queries";
 
 // Map game name → accent color
@@ -156,6 +157,7 @@ export default function EventCard({ event, index = 0 }: { event: EventSummary; i
               style={{ fontFamily: "var(--font-body)", fontWeight: 700, fontSize: "13px", letterSpacing: "0.06em", color: "#ffffff", background: "#C0392B", padding: "10px 20px", borderRadius: "7px", textDecoration: "none", transition: "background 0.2s" }}
               onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "#E74C3C")}
               onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "#C0392B")}
+              onClick={() => trackEvent("click", "Events", "register_click")}
             >
               Register →
             </Link>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCursorGlow } from "@/lib/useCursorGlow";
+import { trackEvent } from "@/lib/analytics";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type FormState = {
@@ -211,6 +212,7 @@ export default function ContactContent() {
     setStatus("loading");
     await new Promise((r) => setTimeout(r, 900));
     console.log("[Alpha Rig Contact Form]", form);
+    trackEvent("form_submit", "Contact", "contact_form");
     setStatus("success");
   };
 

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useCursorGlow } from "@/lib/useCursorGlow";
 import { useCartStore } from "@/lib/store";
 import { urlFor } from "@/lib/sanity";
+import { trackEvent } from "@/lib/analytics";
 import type { ProductFull } from "@/lib/queries";
 
 function fmtPrice(n: number) {
@@ -138,6 +139,7 @@ export default function ProductDetail({ product }: { product: ProductFull }) {
         slug: product.slug.current,
       });
     }
+    trackEvent("add_to_cart", "Ecommerce", product.name);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
     openCart();

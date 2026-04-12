@@ -11,6 +11,7 @@ import {
 import { urlFor, ogImage } from "@/lib/sanity";
 import BlogCard from "@/components/ui/BlogCard";
 import TableOfContents from "./TableOfContents";
+import { BlogViewTracker } from "./BlogViewTracker";
 import type { TocHeading } from "./TableOfContents";
 
 export const revalidate = 60;
@@ -450,6 +451,8 @@ export default async function BlogPostPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+
+      <BlogViewTracker title={post.title} />
 
       <main style={{ minHeight: "100vh", background: "#0A0A0A" }}>
         {/* ── Article header ── */}

@@ -4,6 +4,7 @@ import { useRef } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { trackEvent } from "@/lib/analytics";
 
 // Lazy-load the 3D viewer — keeps SSR clean
 const CreatureViewer = dynamic(() => import("@/components/3d/CreatureViewer"), {
@@ -72,10 +73,12 @@ function GlowButton({
   href,
   children,
   variant,
+  onClick,
 }: {
   href: string;
   children: React.ReactNode;
   variant: "primary" | "secondary";
+  onClick?: () => void;
 }) {
   const btnRef = useRef<HTMLAnchorElement>(null);
   const overlayRef = useRef<HTMLSpanElement>(null);
@@ -136,6 +139,7 @@ function GlowButton({
       href={href}
       ref={btnRef}
       style={styles[variant]}
+      onClick={onClick}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onMouseEnter={(e) => {
@@ -269,10 +273,10 @@ export default function Hero() {
               {...fadeUpProps(0.45)}
               className="flex flex-wrap gap-4"
             >
-              <GlowButton href="/builds" variant="primary">
+              <GlowButton href="/builds" variant="primary" onClick={() => trackEvent("click", "CTA", "hero_explore_builds")}>
                 Explore Builds
               </GlowButton>
-              <GlowButton href="/store" variant="secondary">
+              <GlowButton href="/store" variant="secondary" onClick={() => trackEvent("click", "CTA", "hero_visit_store")}>
                 Visit Store
               </GlowButton>
             </motion.div>

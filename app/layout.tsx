@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Rajdhani, Space_Mono } from "next/font/google";
 import SiteShell from "@/components/layout/SiteShell";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 const bebasNeue = Bebas_Neue({
@@ -109,6 +111,8 @@ export default function RootLayout({
           }}
         />
         <SiteShell>{children}</SiteShell>
+        <GoogleAnalytics />
+        <Analytics />
       </body>
     </html>
   );
