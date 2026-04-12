@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Rajdhani, Space_Mono } from "next/font/google";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
+import SiteShell from "@/components/layout/SiteShell";
 import "./globals.css";
 
 const bebasNeue = Bebas_Neue({
@@ -48,9 +47,7 @@ export default function RootLayout({
       className={`${bebasNeue.variable} ${rajdhani.variable} ${spaceMono.variable} h-full`}
     >
       <body className="min-h-full flex flex-col antialiased">
-        <Navbar />
-        <div className="flex flex-col flex-1">{children}</div>
-        <Footer />
+        <SiteShell>{children}</SiteShell>
       </body>
     </html>
   );
