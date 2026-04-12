@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Bebas_Neue, Rajdhani, Space_Mono } from "next/font/google";
 import SiteShell from "@/components/layout/SiteShell";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { GoogleTagManagerHead, GoogleTagManagerBody } from "@/components/analytics/GoogleTagManager";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
@@ -84,6 +85,7 @@ export default function RootLayout({
       className={`${bebasNeue.variable} ${rajdhani.variable} ${spaceMono.variable} h-full`}
     >
       <body className="min-h-full flex flex-col antialiased">
+        <GoogleTagManagerBody />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -114,6 +116,7 @@ export default function RootLayout({
           }}
         />
         <SiteShell>{children}</SiteShell>
+        <GoogleTagManagerHead />
         <GoogleAnalytics />
         <Analytics />
       </body>
