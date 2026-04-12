@@ -414,6 +414,7 @@ export default function Footer() {
             borderTop: "1px solid rgba(255,255,255,0.06)",
             paddingTop: "40px",
             marginBottom: "40px",
+            textAlign: "center",
           }}
         >
           <p
@@ -428,7 +429,7 @@ export default function Footer() {
           >
             Our Verticals
           </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3" style={{ justifyContent: "center" }}>
             {/* Alpha Zen-X — links out */}
             <a
               href="https://alphazenx.com"
