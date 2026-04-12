@@ -220,7 +220,7 @@ export default function Hero() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[2fr_3fr] lg:items-center lg:gap-4">
 
           {/* ── LEFT: text content ── */}
-          <div className="flex flex-col gap-8 order-2 lg:order-1">
+          <div className="flex flex-col gap-8 order-1 lg:order-1">
 
             {/* Tag */}
             <motion.p
@@ -294,7 +294,7 @@ export default function Hero() {
 
           {/* ── RIGHT: 3D creature — fade in after hero text ── */}
           <motion.div
-            className="order-1 lg:order-2 w-full"
+            className="order-2 lg:order-2 w-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.0, delay: 0.3, ease: "easeOut" }}
