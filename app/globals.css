@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+:root {
+  --color-void: #0a0a0a;
+  --color-forge: #111111;
+  --color-armor: #1a1a1a;
+  --color-dragon-fire: #c0392b;
+  --color-ember: #e74c3c;
+  --color-steel: #888888;
+  --color-white: #ffffff;
+
+  --font-display: var(--font-bebas);
+  --font-body: var(--font-rajdhani);
+  --font-mono: var(--font-space-mono);
+
+  /* Glass system */
+  --glass-navbar-bg: rgba(10, 10, 10, 0.4);
+  --glass-hero-bg: rgba(255, 255, 255, 0.04);
+  --glass-card-bg: rgba(10, 10, 10, 0.55);
+  --glass-blog-bg: rgba(15, 10, 10, 0.6);
+}
+
+@theme inline {
+  --color-void: #0a0a0a;
+  --color-forge: #111111;
+  --color-armor: #1a1a1a;
+  --color-dragon-fire: #c0392b;
+  --color-ember: #e74c3c;
+  --color-steel: #888888;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+  /* Prevent layout shift during font load */
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-void);
+  color: var(--color-white);
+  font-family: var(--font-body), 'Rajdhani', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100%;
+  /* Compositor-layer for the root — keeps scroll jank off the main thread */
+  overscroll-behavior: none;
+}
+
+/* ── Glass utilities ─────────────────────────────────────────────────────────
+   Each glass element creates its own GPU compositing layer via
+   `will-change: transform`. This prevents backdrop-filter repaints from
+   propagating up the layer tree when sibling elements animate.
+   ─────────────────────────────────────────────────────────────────────────── */
+.glass-navbar {
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  background: rgba(10, 10, 10, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.glass-hero {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.glass-card {
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  background: rgba(10, 10, 10, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.glass-blog {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(15, 10, 10, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Cursor tracking glow */
+.cursor-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.cursor-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(192, 57, 43, 0.1),
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Blog ToC sidebar — hide below 900px */
+.blog-toc-sidebar {
+  display: block;
+}
+@media (max-width: 900px) {
+  .blog-toc-sidebar {
+    display: none;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-forge);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-dragon-fire);
+  border-radius: 2px;
+}
+
+/* Selection */
+::selection {
+  background: rgba(192, 57, 43, 0.4);
+  color: #ffffff;
+}
