@@ -536,22 +536,6 @@ export default function Footer() {
             }}
           >
             © 2026 Alpha Rig Private Limited. All rights reserved.
-            <span style={{ margin: "0 8px", color: "rgba(255,255,255,0.10)" }}>||</span>
-            built by{" "}
-            <a
-              href="https://alphazenx.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                color: "rgba(192,57,43,0.6)",
-                textDecoration: "none",
-                transition: "color 0.18s",
-              }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#C0392B"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(192,57,43,0.6)"; }}
-            >
-              Alpha Zen X
-            </a>
           </p>
 
           <div className="flex items-center gap-6">
