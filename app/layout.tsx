@@ -46,6 +46,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Alpha Rig Private Limited" }],
   creator: "Alpha Rig Private Limited",
+  verification: {
+    google: "google09245480520ee3cf",
+  },
   openGraph: {
     type: "website",
     locale: "en_IN",
