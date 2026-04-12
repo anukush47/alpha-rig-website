@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCartStore } from "@/lib/store";
 
 const NAV_LINKS = [
   { label: "Builds", href: "/builds" },
@@ -17,6 +18,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const totalItems = useCartStore((s) => s.getTotalItems());
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -108,8 +110,41 @@ export default function Navbar() {
             })}
           </ul>
 
-          {/* Right — CTA + hamburger */}
-          <div className="flex items-center gap-4">
+          {/* Right — CTA + cart + hamburger */}
+          <div className="flex items-center gap-3">
+            {/* Cart icon */}
+            <Link
+              href="/store"
+              aria-label={`Cart — ${totalItems} items`}
+              className="relative flex items-center justify-center"
+              style={{ width: "36px", height: "36px" }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <path d="M16 10a4 4 0 01-8 0" />
+              </svg>
+              {totalItems > 0 && (
+                <span
+                  className="absolute -top-1 -right-1 flex items-center justify-center"
+                  style={{
+                    minWidth: "16px",
+                    height: "16px",
+                    padding: "0 4px",
+                    borderRadius: "8px",
+                    background: "#C0392B",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "9px",
+                    fontWeight: 700,
+                    color: "#fff",
+                    lineHeight: 1,
+                  }}
+                >
+                  {totalItems > 99 ? "99+" : totalItems}
+                </span>
+              )}
+            </Link>
+
             {/* Visit Store button — desktop */}
             <Link
               href="/store"
