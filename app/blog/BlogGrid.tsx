@@ -8,7 +8,20 @@ import BlogCard from "@/components/ui/BlogCard";
 import { urlFor } from "@/lib/sanity";
 import type { BlogPostSummary } from "@/lib/queries";
 
-const CATEGORIES = ["All", "Hardware", "Esports", "Custom PC", "Guides", "Gaming"];
+// Matches BLOG_CATEGORIES in sanity/schemas/blogPost.ts
+const CATEGORIES = [
+  { label: "All",                       value: "All"                       },
+  { label: "AI Hardware",               value: "AI Hardware"               },
+  { label: "CPUs & Processing",         value: "CPUs & Processing"         },
+  { label: "GPUs & Gaming",             value: "GPUs & Gaming"             },
+  { label: "Storage & Memory",          value: "Storage & Memory"          },
+  { label: "PC Building & Upgrades",    value: "PC Building & Upgrades"    },
+  { label: "Troubleshooting & Fixes",   value: "Troubleshooting & Fixes"   },
+  { label: "Cooling & Power",           value: "Cooling & Power"           },
+  { label: "Connectivity & Future Tech", value: "Connectivity & Future Tech" },
+  { label: "Esports & Gaming Culture",  value: "Esports & Gaming Culture"  },
+  { label: "Security & Privacy",        value: "Security & Privacy"        },
+];
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-US", {
@@ -27,10 +40,14 @@ export default function BlogGrid({ posts }: { posts: BlogPostSummary[] }) {
   const filtered = useMemo(() => {
     return posts.filter((p) => {
       const matchCat =
-        activeCategory === "All" || p.category === activeCategory;
-      const matchSearch = p.title
-        .toLowerCase()
-        .includes(search.toLowerCase().trim());
+        activeCategory === "All" ||
+        p.category === activeCategory ||
+        (p as BlogPostSummary & { subcategories?: string[] }).subcategories?.includes(activeCategory);
+      const matchSearch =
+        search.trim() === "" ||
+        p.title.toLowerCase().includes(search.toLowerCase().trim()) ||
+        p.excerpt?.toLowerCase().includes(search.toLowerCase().trim()) ||
+        p.tags?.some((t) => t.toLowerCase().includes(search.toLowerCase().trim()));
       return matchCat && matchSearch;
     });
   }, [posts, activeCategory, search]);
@@ -57,31 +74,40 @@ export default function BlogGrid({ posts }: { posts: BlogPostSummary[] }) {
       >
         {/* Category pills */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              style={{
-                fontFamily: "var(--font-space-mono)",
-                fontSize: "10px",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                padding: "7px 14px",
-                borderRadius: "6px",
-                border: "1px solid",
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-                background: activeCategory === cat ? "#C0392B" : "#1A1A1A",
-                color: activeCategory === cat ? "#fff" : "#666",
-                borderColor:
-                  activeCategory === cat
+          {CATEGORIES.map(({ label, value }) => {
+            const active = activeCategory === value;
+            return (
+              <button
+                key={value}
+                onClick={() => setActiveCategory(value)}
+                style={{
+                  fontFamily: "var(--font-space-mono)",
+                  fontSize: "9px",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  padding: "6px 13px",
+                  borderRadius: "6px",
+                  border: "1px solid",
+                  cursor: "pointer",
+                  transition: "all 0.18s ease",
+                  backdropFilter: active ? "none" : "blur(10px)",
+                  WebkitBackdropFilter: active ? "none" : "blur(10px)",
+                  background: active
                     ? "#C0392B"
-                    : "rgba(255,255,255,0.07)",
-              }}
-            >
-              {cat}
-            </button>
-          ))}
+                    : "rgba(255,255,255,0.04)",
+                  color: active ? "#fff" : "rgba(255,255,255,0.45)",
+                  borderColor: active
+                    ? "#C0392B"
+                    : "rgba(255,255,255,0.08)",
+                  boxShadow: active
+                    ? "0 2px 12px rgba(192,57,43,0.35)"
+                    : "none",
+                }}
+              >
+                {label}
+              </button>
+            );
+          })}
         </div>
 
         {/* Search */}

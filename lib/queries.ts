@@ -22,9 +22,13 @@ export interface BlogPostSummary {
   slug: SanitySlug;
   excerpt: string;
   category: string;
+  subcategories?: string[];
   tags: string[];
   author: string;
+  authorBio?: string;
   publishedAt: string;
+  readingTime?: number;
+  featured?: boolean;
   coverImage: SanityImage;
 }
 
@@ -32,6 +36,7 @@ export interface BlogPostFull extends BlogPostSummary {
   body: unknown[];
   seoTitle?: string;
   seoDescription?: string;
+  seoKeywords?: string[];
 }
 
 // Build
@@ -93,7 +98,8 @@ export interface ProductFull extends ProductSummary {
 
 // ─── GROQ projections ─────────────────────────────────────────────────────────
 const BLOG_SUMMARY = `
-  _id, title, slug, excerpt, category, tags, author, publishedAt,
+  _id, title, slug, excerpt, category, subcategories, tags,
+  author, authorBio, publishedAt, readingTime, featured,
   coverImage { ..., asset-> }
 `;
 
@@ -134,7 +140,8 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPostFull | nu
       ${BLOG_SUMMARY},
       body,
       seoTitle,
-      seoDescription
+      seoDescription,
+      seoKeywords
     }`,
     { slug }
   );
