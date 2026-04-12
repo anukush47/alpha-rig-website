@@ -274,13 +274,13 @@ export default function CheckoutPage() {
             </p>
 
             <GlassInput label="Full Name" value={form.name} onChange={field("name")} placeholder="Your full name" required />
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <div className="checkout-row-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
               <GlassInput label="Email" type="email" value={form.email} onChange={field("email")} placeholder="you@example.com" required />
               <GlassInput label="Phone" type="tel" value={form.phone} onChange={field("phone")} placeholder="+91 XXXXX XXXXX" required />
             </div>
             <GlassInput label="Address Line 1" value={form.address1} onChange={field("address1")} placeholder="House / Flat / Street" required />
             <GlassInput label="Address Line 2" value={form.address2} onChange={field("address2")} placeholder="Landmark, Colony (optional)" />
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px" }}>
+            <div className="checkout-row-3" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px" }}>
               <GlassInput label="City" value={form.city} onChange={field("city")} placeholder="Chhindwara" required />
               <GlassInput label="State" value={form.state} onChange={field("state")} placeholder="Madhya Pradesh" required />
               <GlassInput label="Pincode" value={form.pincode} onChange={field("pincode")} placeholder="490001" required />
@@ -335,6 +335,8 @@ export default function CheckoutPage() {
       <style>{`
         @media (max-width: 768px) {
           .checkout-grid { grid-template-columns: 1fr !important; }
+          .checkout-row-2 { grid-template-columns: 1fr !important; }
+          .checkout-row-3 { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </main>

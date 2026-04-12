@@ -156,9 +156,9 @@ export default function ProductDetail({ product }: { product: ProductFull }) {
   }
 
   return (
-    <section style={{ padding: "120px 24px 64px", maxWidth: "1200px", margin: "0 auto" }}>
+    <section className="product-detail-section" style={{ padding: "120px 24px 64px", maxWidth: "1200px", margin: "0 auto" }}>
       {/* Breadcrumb */}
-      <p style={{ fontFamily: "var(--font-mono)", fontSize: "10px", letterSpacing: "2px", color: "#444", marginBottom: "40px" }}>
+      <p className="product-breadcrumb" style={{ fontFamily: "var(--font-mono)", fontSize: "10px", letterSpacing: "2px", color: "#444", marginBottom: "40px" }}>
         <Link href="/store" style={{ color: "#555", textDecoration: "none" }}
           onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#C0392B")}
           onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#555")}
@@ -182,6 +182,7 @@ export default function ProductDetail({ product }: { product: ProductFull }) {
         <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           {/* Main image */}
           <div
+            className="product-main-image"
             style={{
               position: "relative",
               height: "480px",
@@ -464,7 +465,10 @@ export default function ProductDetail({ product }: { product: ProductFull }) {
 
       <style>{`
         @media (max-width: 768px) {
-          .product-detail-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+          .product-detail-section { padding: 88px 16px 40px !important; }
+          .product-breadcrumb { margin-bottom: 20px !important; }
+          .product-detail-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+          .product-main-image { height: 300px !important; }
         }
       `}</style>
     </section>

@@ -111,7 +111,7 @@ export default function BlogGrid({ posts }: { posts: BlogPostSummary[] }) {
         </div>
 
         {/* Search */}
-        <div style={{ position: "relative", minWidth: "240px" }}>
+        <div className="blog-search-wrapper" style={{ position: "relative", minWidth: "240px" }}>
           <input
             type="text"
             placeholder="Search articles..."
@@ -176,6 +176,7 @@ export default function BlogGrid({ posts }: { posts: BlogPostSummary[] }) {
           >
             <Link href={`/blog/${featured.slug.current}`} className="block">
               <article
+                className="blog-featured-article"
                 style={{
                   position: "relative",
                   borderRadius: "16px",
@@ -201,10 +202,12 @@ export default function BlogGrid({ posts }: { posts: BlogPostSummary[] }) {
               >
                 {/* Image side */}
                 <div
+                  className="blog-featured-image"
                   style={{
                     position: "relative",
                     overflow: "hidden",
                     background: "rgba(26,26,26,0.9)",
+                    minHeight: "240px",
                   }}
                 >
                   {featuredImage ? (
@@ -254,6 +257,7 @@ export default function BlogGrid({ posts }: { posts: BlogPostSummary[] }) {
 
                 {/* Content side */}
                 <div
+                  className="blog-featured-content"
                   style={{
                     padding: "48px 40px",
                     display: "flex",
@@ -423,6 +427,25 @@ export default function BlogGrid({ posts }: { posts: BlogPostSummary[] }) {
           </p>
         </motion.div>
       )}
+
+      <style>{`
+        @media (max-width: 768px) {
+          .blog-featured-article {
+            grid-template-columns: 1fr !important;
+            min-height: unset !important;
+          }
+          .blog-featured-image {
+            min-height: 220px !important;
+          }
+          .blog-featured-content {
+            padding: 24px 20px !important;
+          }
+          .blog-search-wrapper {
+            min-width: unset !important;
+            width: 100% !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

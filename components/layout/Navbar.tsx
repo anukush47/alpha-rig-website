@@ -238,7 +238,7 @@ export default function Navbar() {
                       className="block text-center"
                       style={{
                         fontFamily: "var(--font-display)",
-                        fontSize: "48px",
+                        fontSize: "clamp(32px, 8vw, 48px)",
                         letterSpacing: "0.05em",
                         color: active ? "#C0392B" : "#ffffff",
                       }}
