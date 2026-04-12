@@ -273,10 +273,10 @@ export default function CheckoutPage() {
               DELIVERY DETAILS
             </p>
 
-            <GlassInput label="Full Name" value={form.name} onChange={field("name")} placeholder="Anupam Kushwaha" required />
+            <GlassInput label="Full Name" value={form.name} onChange={field("name")} placeholder="Your full name" required />
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
               <GlassInput label="Email" type="email" value={form.email} onChange={field("email")} placeholder="you@example.com" required />
-              <GlassInput label="Phone" type="tel" value={form.phone} onChange={field("phone")} placeholder="+91 98765 43210" required />
+              <GlassInput label="Phone" type="tel" value={form.phone} onChange={field("phone")} placeholder="+91 XXXXX XXXXX" required />
             </div>
             <GlassInput label="Address Line 1" value={form.address1} onChange={field("address1")} placeholder="House / Flat / Street" required />
             <GlassInput label="Address Line 2" value={form.address2} onChange={field("address2")} placeholder="Landmark, Colony (optional)" />

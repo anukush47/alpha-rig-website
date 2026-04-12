@@ -332,7 +332,7 @@ export default function ContactContent() {
                         id="name" type="text"
                         value={form.name}
                         onChange={(e) => field("name", e.target.value)}
-                        placeholder="Anupam Kushwaha"
+                        placeholder="Your full name"
                         autoComplete="name"
                         style={{ ...inputBase, borderColor: errors.name ? "rgba(231,76,60,0.55)" : "rgba(255,255,255,0.09)" }}
                         onFocus={(e) => applyFocus(e.currentTarget)}
@@ -361,7 +361,7 @@ export default function ContactContent() {
                         id="phone" type="tel"
                         value={form.phone}
                         onChange={(e) => field("phone", e.target.value)}
-                        placeholder="+91 82259 86582"
+                        placeholder="+91 XXXXX XXXXX"
                         autoComplete="tel"
                         style={{ ...inputBase }}
                         onFocus={(e) => applyFocus(e.currentTarget)}
