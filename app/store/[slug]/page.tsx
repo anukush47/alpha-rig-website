@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getProductBySlug, getAllProducts } from "@/lib/queries";
+import { urlFor } from "@/lib/sanity";
 import ProductDetail from "./ProductDetail";
 import ProductCard from "@/components/ui/ProductCard";
 
@@ -14,14 +15,21 @@ export async function generateMetadata({
   const { slug } = await params;
   const product = await getProductBySlug(slug);
   if (!product) return {};
+  const imageUrl = product.images?.[0]?.asset
+    ? urlFor(product.images[0]).width(1200).height(630).fit("crop").auto("format").url()
+    : undefined;
+  const description = product.description?.slice(0, 155) ?? `${product.name} — ${product.brand} | Alpha Rig Store`;
   return {
-    title: `${product.name} | Alpha Rig Store`,
-    description: product.description,
+    title: product.name,
+    description,
     openGraph: {
-      title: `${product.name} | Alpha Rig`,
-      description: product.description,
+      title: `${product.name} | Alpha Rig Store`,
+      description,
+      url: `https://alpharig.in/store/${slug}`,
       type: "website",
+      images: imageUrl ? [{ url: imageUrl, width: 1200, height: 630, alt: product.name }] : [],
     },
+    twitter: { card: "summary_large_image", title: product.name, description, images: imageUrl ? [imageUrl] : [] },
   };
 }
 
@@ -38,6 +46,28 @@ export default async function ProductPage({
 
   if (!product) notFound();
 
+  const productImageUrl = product.images?.[0]?.asset
+    ? urlFor(product.images[0]).width(800).auto("format").url()
+    : undefined;
+
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description,
+    brand: { "@type": "Brand", name: product.brand },
+    image: productImageUrl,
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "INR",
+      price: product.price,
+      availability: product.inStock
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      seller: { "@type": "Organization", name: "Alpha Rig Private Limited" },
+    },
+  };
+
   const related = allProducts
     .filter((p) => p.slug.current !== slug && p.category === product.category)
     .slice(0, 4);
@@ -53,6 +83,10 @@ export default async function ProductPage({
 
   return (
     <main style={{ minHeight: "100vh", background: "#0A0A0A" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
       <ProductDetail product={product} />
 
       {/* ── Related products ── */}

@@ -25,14 +25,46 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Alpha Rig | Custom PC Builds",
+  metadataBase: new URL("https://alpharig.in"),
+  title: {
+    default: "Alpha Rig | Custom PCs · Esports Events · PC Culture India",
+    template: "%s | Alpha Rig",
+  },
   description:
-    "Alpha Rig Private Limited — Precision-engineered custom PC builds, events, and hardware for enthusiasts who demand the extraordinary.",
-  keywords: ["custom PC", "gaming PC", "PC builds", "Alpha Rig", "custom builds India"],
+    "Alpha Rig Private Limited — Custom-built gaming PCs, professional esports events, PC hardware blog, and online store. Based in Durg, Chhattisgarh, India.",
+  keywords: [
+    "custom gaming PC India",
+    "custom built PC Chhattisgarh",
+    "esports events India",
+    "PC components online",
+    "gaming PC builder India",
+    "Alpha Rig",
+    "custom PC Durg",
+    "gaming PC Chhattisgarh",
+  ],
+  authors: [{ name: "Alpha Rig Private Limited" }],
+  creator: "Alpha Rig Private Limited",
   openGraph: {
-    title: "Alpha Rig | Custom PC Builds",
-    description: "Precision-engineered custom PC builds for enthusiasts.",
     type: "website",
+    locale: "en_IN",
+    url: "https://alpharig.in",
+    siteName: "Alpha Rig",
+    title: "Alpha Rig | Custom PCs · Esports Events · PC Culture India",
+    description:
+      "Alpha Rig Private Limited — Custom-built gaming PCs, professional esports events, PC hardware blog, and online store. Based in Durg, Chhattisgarh, India.",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Alpha Rig" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Alpha Rig | Custom PCs · Esports Events · PC Culture India",
+    description:
+      "Alpha Rig Private Limited — Custom-built gaming PCs, professional esports events, and PC hardware. Based in Durg, Chhattisgarh, India.",
+    images: ["/og-image.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-video-preview": -1, "max-image-preview": "large" },
   },
 };
 
@@ -47,6 +79,35 @@ export default function RootLayout({
       className={`${bebasNeue.variable} ${rajdhani.variable} ${spaceMono.variable} h-full`}
     >
       <body className="min-h-full flex flex-col antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Alpha Rig Private Limited",
+              url: "https://alpharig.in",
+              logo: "https://alpharig.in/logo.png",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Durg",
+                addressRegion: "Chhattisgarh",
+                addressCountry: "IN",
+              },
+              contactPoint: {
+                "@type": "ContactPoint",
+                telephone: "+91-8225986582",
+                contactType: "customer service",
+              },
+              sameAs: [
+                "https://instagram.com/alpharig",
+                "https://twitter.com/alpharig",
+                "https://youtube.com/@alpharig",
+                "https://linkedin.com/company/alpharig",
+              ],
+            }),
+          }}
+        />
         <SiteShell>{children}</SiteShell>
       </body>
     </html>

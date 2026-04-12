@@ -5,8 +5,18 @@ import EventsContent from "./EventsContent";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Esports Events | Alpha Rig",
-  description: "Full-scale professional esports events by Alpha Rig. Live commentary, media coverage, and serious prize pools.",
+  title: "Esports Events",
+  description:
+    "Professional esports tournaments hosted by Alpha Rig — live commentary, media coverage, and serious prize pools. India's premier PC gaming event organiser.",
+  keywords: ["esports events India", "gaming tournaments Chhattisgarh", "VALORANT tournament India", "Alpha Rig events"],
+  openGraph: {
+    title: "Esports Events | Alpha Rig",
+    description: "Full-scale professional esports tournaments — live, covered, unforgettable.",
+    url: "https://alpharig.in/events",
+    type: "website",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+  },
+  twitter: { card: "summary_large_image", title: "Esports Events | Alpha Rig" },
 };
 
 export default async function EventsPage() {

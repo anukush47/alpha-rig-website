@@ -5,16 +5,19 @@ import type { Metadata } from "next";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "The Rig Report | Alpha Rig",
+  title: "The Rig Report — PC Hardware Blog",
   description:
-    "Hardware deep-dives, esports coverage, custom PC builds and gaming culture — straight from the forge.",
+    "Hardware deep-dives, esports coverage, custom PC build guides and gaming culture from Alpha Rig — straight from the forge.",
+  keywords: ["PC hardware blog India", "gaming blog", "custom PC guide", "esports news India", "Alpha Rig blog"],
   openGraph: {
     title: "The Rig Report | Alpha Rig",
-    description:
-      "Hardware deep-dives, esports coverage, custom PC builds and gaming culture — straight from the forge.",
+    description: "Hardware deep-dives, esports coverage, and gaming culture — straight from the forge.",
+    url: "https://alpharig.in/blog",
     siteName: "Alpha Rig",
     type: "website",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
   },
+  twitter: { card: "summary_large_image", title: "The Rig Report | Alpha Rig" },
 };
 
 export default async function BlogPage() {

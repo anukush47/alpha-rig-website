@@ -5,9 +5,18 @@ import BuildsGrid from "./BuildsGrid";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Custom PC Builds | Alpha Rig",
+  title: "Custom PC Builds",
   description:
-    "Every machine is hand-assembled, bench-tested, and built to outlast the hype. Browse Alpha Rig's portfolio of custom PC builds.",
+    "Browse Alpha Rig's portfolio of custom-built gaming PCs — hand-assembled, bench-tested, and built to outlast the hype. Based in Durg, Chhattisgarh, India.",
+  keywords: ["custom PC builds India", "gaming PC portfolio", "custom built PC Chhattisgarh", "Alpha Rig builds"],
+  openGraph: {
+    title: "Custom PC Builds | Alpha Rig",
+    description: "Hand-assembled, bench-tested custom gaming PCs from Durg, Chhattisgarh.",
+    url: "https://alpharig.in/builds",
+    type: "website",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+  },
+  twitter: { card: "summary_large_image", title: "Custom PC Builds | Alpha Rig" },
 };
 
 export default async function BuildsPage() {

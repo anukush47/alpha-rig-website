@@ -93,24 +93,28 @@ export async function generateMetadata({
   const post = await getBlogPostBySlug(slug);
   if (!post) return { title: "Post Not Found | Alpha Rig" };
 
-  const title = post.seoTitle ?? `${post.title} | Alpha Rig`;
   const description = post.seoDescription ?? post.excerpt;
   const imageUrl = post.coverImage?.asset ? ogImage(post.coverImage) : undefined;
+  // Use absolute title for seoTitle (avoids template doubling), template for plain title
+  const titleField = post.seoTitle
+    ? { absolute: post.seoTitle }
+    : post.title;
 
   return {
-    title,
+    title: titleField,
     description,
     openGraph: {
-      title,
+      title: post.seoTitle ?? `${post.title} | Alpha Rig`,
       description,
+      url: `https://alpharig.in/blog/${post.slug.current}`,
       type: "article",
       publishedTime: post.publishedAt,
       authors: [post.author],
-      images: imageUrl ? [{ url: imageUrl, width: 1200, height: 630 }] : [],
+      images: imageUrl ? [{ url: imageUrl, width: 1200, height: 630, alt: post.title }] : [],
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: post.seoTitle ?? post.title,
       description,
       images: imageUrl ? [imageUrl] : [],
     },

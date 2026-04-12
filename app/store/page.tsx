@@ -5,13 +5,18 @@ import StoreClient from "./StoreClient";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "The Store | Alpha Rig",
-  description: "GPUs, CPUs, cooling, peripherals, and Alpha Rig Originals — hand-picked hardware for serious builders.",
+  title: "PC Hardware Store",
+  description:
+    "Shop GPUs, CPUs, cooling, peripherals, and Alpha Rig Originals — hand-picked hardware for serious PC builders in India.",
+  keywords: ["buy PC components India", "GPU India", "CPU India", "gaming peripherals", "Alpha Rig store", "PC hardware online India"],
   openGraph: {
-    title: "The Store | Alpha Rig",
-    description: "Shop curated PC hardware and Alpha Rig Original products.",
+    title: "PC Hardware Store | Alpha Rig",
+    description: "Hand-picked GPUs, CPUs, cooling, peripherals, and Alpha Rig Originals.",
+    url: "https://alpharig.in/store",
     type: "website",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
   },
+  twitter: { card: "summary_large_image", title: "PC Hardware Store | Alpha Rig" },
 };
 
 export default async function StorePage() {

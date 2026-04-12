@@ -18,9 +18,22 @@ export async function generateMetadata({
   const { slug } = await params;
   const build = await getBuildBySlug(slug);
   if (!build) return {};
+  const imageUrl = build.images?.[0]?.asset
+    ? urlFor(build.images[0]).width(1200).height(630).fit("crop").auto("format").url()
+    : undefined;
+  const specsSnippet = build.specs?.slice(0, 3).map((s) => `${s.label}: ${s.value}`).join(" · ");
+  const description = specsSnippet ? `${build.tagline} — ${specsSnippet}` : (build.description?.slice(0, 155) ?? "");
   return {
-    title: `${build.name} | Alpha Rig`,
-    description: build.description,
+    title: build.name,
+    description,
+    openGraph: {
+      title: `${build.name} | Alpha Rig`,
+      description,
+      url: `https://alpharig.in/builds/${slug}`,
+      type: "website",
+      images: imageUrl ? [{ url: imageUrl, width: 1200, height: 630, alt: build.name }] : [],
+    },
+    twitter: { card: "summary_large_image", title: build.name, description, images: imageUrl ? [imageUrl] : [] },
   };
 }
 
