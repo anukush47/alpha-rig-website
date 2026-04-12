@@ -1,4 +1,3 @@
-import { use } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -90,7 +89,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = use(params);
+  const { slug } = await params;
   const post = await getBlogPostBySlug(slug);
   if (!post) return { title: "Post Not Found | Alpha Rig" };
 
@@ -367,7 +366,7 @@ export default async function BlogPostPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = use(params);
+  const { slug } = await params;
   const post = await getBlogPostBySlug(slug);
 
   if (!post) {
