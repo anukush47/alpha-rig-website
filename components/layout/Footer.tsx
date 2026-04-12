@@ -347,6 +347,23 @@ export default function Footer() {
                   hello@alpharig.in
                 </a>
               </li>
+              <li>
+                <a
+                  href="tel:+918225986582"
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "12px",
+                    color: "rgba(255,255,255,0.35)",
+                    letterSpacing: "0.04em",
+                    transition: "color 0.18s",
+                  }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#ffffff"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.35)"; }}
+                >
+                  +91-8225986582
+                </a>
+              </li>
+
               {/* Glass CTA button */}
               <li>
                 <Link
