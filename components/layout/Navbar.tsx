@@ -19,6 +19,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const totalItems = useCartStore((s) => s.getTotalItems());
+  const openCart = useCartStore((s) => s.openCart);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -113,11 +114,11 @@ export default function Navbar() {
           {/* Right — CTA + cart + hamburger */}
           <div className="flex items-center gap-3">
             {/* Cart icon */}
-            <Link
-              href="/store"
+            <button
+              onClick={openCart}
               aria-label={`Cart — ${totalItems} items`}
               className="relative flex items-center justify-center"
-              style={{ width: "36px", height: "36px" }}
+              style={{ width: "36px", height: "36px", background: "none", border: "none", cursor: "pointer", padding: 0 }}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
@@ -143,7 +144,7 @@ export default function Navbar() {
                   {totalItems > 99 ? "99+" : totalItems}
                 </span>
               )}
-            </Link>
+            </button>
 
             {/* Visit Store button — desktop */}
             <Link

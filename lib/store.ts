@@ -12,6 +12,9 @@ export interface CartItem {
 
 interface CartStore {
   items: CartItem[];
+  isOpen: boolean;
+  openCart: () => void;
+  closeCart: () => void;
   addItem: (product: Omit<CartItem, "quantity">) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, qty: number) => void;
@@ -24,6 +27,10 @@ export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       items: [],
+      isOpen: false,
+
+      openCart: () => set({ isOpen: true }),
+      closeCart: () => set({ isOpen: false }),
 
       addItem: (product) => {
         set((state) => {
@@ -62,6 +69,7 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: "alpha-rig-cart",
+      partialize: (state) => ({ items: state.items }), // don't persist isOpen
     }
   )
 );

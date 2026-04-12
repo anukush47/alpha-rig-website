@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import CartDrawer from "@/components/ui/CartDrawer";
 
 export default function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -13,6 +14,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Navbar />
+      <CartDrawer />
       <div className="flex flex-col flex-1">{children}</div>
       <Footer />
     </>
