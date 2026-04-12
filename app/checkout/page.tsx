@@ -168,7 +168,7 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <main style={{ minHeight: "100vh", background: "#0A0A0A", display: "flex", alignItems: "center", justifyContent: "center", padding: "120px 24px" }}>
+      <main style={{ minHeight: "100dvh", background: "#0A0A0A", display: "flex", alignItems: "center", justifyContent: "center", padding: "120px 24px" }}>
         <div style={{ textAlign: "center" }}>
           <p style={{ fontFamily: "var(--font-bebas)", fontSize: "2.5rem", color: "#333", letterSpacing: "0.04em", marginBottom: "16px" }}>
             YOUR CART IS EMPTY
@@ -182,7 +182,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <main style={{ minHeight: "100vh", background: "#0A0A0A", padding: "120px 24px 80px" }}>
+    <main style={{ minHeight: "100dvh", background: "#0A0A0A", padding: "120px 24px 80px" }}>
       <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
         {/* Title */}
         <h1

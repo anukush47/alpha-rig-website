@@ -72,6 +72,7 @@ export default function BuildCard({ build, index = 0 }: { build: BuildSummary; i
             src={imgUrl}
             alt={firstImage?.alt ?? build.name}
             fill
+            priority={index < 4}
             sizes="(max-width: 768px) 100vw, 340px"
             style={{ objectFit: "cover" }}
           />

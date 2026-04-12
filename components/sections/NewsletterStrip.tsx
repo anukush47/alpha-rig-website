@@ -12,6 +12,7 @@ export default function NewsletterStrip() {
 
   // ── Cursor tracking: update CSS vars on the glow overlay ─────────────────
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) return;
     const el   = sectionRef.current;
     const glow = cursorGlowRef.current;
     if (!el || !glow) return;
@@ -85,14 +86,14 @@ export default function NewsletterStrip() {
           maxWidth: "640px",
           marginLeft: "auto",
           marginRight: "auto",
-          paddingLeft: "40px",
-          paddingRight: "40px",
-          paddingTop: "52px",
-          paddingBottom: "52px",
+          paddingLeft: "clamp(20px, 5vw, 40px)",
+          paddingRight: "clamp(20px, 5vw, 40px)",
+          paddingTop: "clamp(32px, 5vw, 52px)",
+          paddingBottom: "clamp(32px, 5vw, 52px)",
 
-          // Apple liquid glass
-          backdropFilter: "blur(48px) saturate(180%)",
-          WebkitBackdropFilter: "blur(48px) saturate(180%)",
+          // Apple liquid glass — blur reduced on mobile via CSS class
+          backdropFilter: "blur(32px)",
+          WebkitBackdropFilter: "blur(32px)",
           background:
             "linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%)",
           border: "1px solid rgba(255,255,255,0.10)",

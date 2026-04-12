@@ -22,8 +22,8 @@ function QuantityBtn({
     <button
       onClick={onClick}
       style={{
-        width: "28px",
-        height: "28px",
+        width: "36px",
+        height: "36px",
         borderRadius: "6px",
         border: "1px solid rgba(255,255,255,0.1)",
         background: "rgba(255,255,255,0.05)",
@@ -155,8 +155,8 @@ export default function CartDrawer() {
                 onClick={closeCart}
                 aria-label="Close cart"
                 style={{
-                  width: "36px",
-                  height: "36px",
+                  width: "44px",
+                  height: "44px",
                   borderRadius: "8px",
                   border: "1px solid rgba(255,255,255,0.08)",
                   background: "transparent",
@@ -219,7 +219,7 @@ export default function CartDrawer() {
                 </button>
               </div>
             ) : (
-              <div style={{ flex: 1, overflowY: "auto", padding: "16px 24px", display: "flex", flexDirection: "column", gap: "0" }}>
+              <div style={{ flex: 1, overflowY: "auto", overscrollBehavior: "contain", padding: "16px 24px", display: "flex", flexDirection: "column", gap: "0" }}>
                 {items.map((item, i) => (
                   <div key={item.id}>
                     {i > 0 && <div style={{ height: "1px", background: "rgba(255,255,255,0.05)", margin: "12px 0" }} />}
@@ -242,6 +242,8 @@ export default function CartDrawer() {
                             alt={item.name}
                             width={68}
                             height={68}
+                            sizes="68px"
+                            loading="lazy"
                             style={{ objectFit: "cover", width: "100%", height: "100%" }}
                           />
                         ) : (

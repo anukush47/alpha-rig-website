@@ -118,7 +118,7 @@ export default function Navbar() {
               onClick={openCart}
               aria-label={`Cart — ${totalItems} items`}
               className="relative flex items-center justify-center"
-              style={{ width: "36px", height: "36px", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+              style={{ width: "44px", height: "44px", background: "none", border: "none", cursor: "pointer", padding: 0 }}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
@@ -179,7 +179,7 @@ export default function Navbar() {
 
             {/* Hamburger — mobile */}
             <button
-              className="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-[5px]"
+              className="md:hidden flex flex-col justify-center items-center w-11 h-11 gap-[5px]"
               onClick={() => setMobileOpen((v) => !v)}
               aria-label="Toggle menu"
             >

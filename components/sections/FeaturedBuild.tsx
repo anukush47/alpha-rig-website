@@ -9,6 +9,7 @@ export default function FeaturedBuild() {
   const glowRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) return;
     const card = cardRef.current;
     const glow = glowRef.current;
     if (!card || !glow) return;
@@ -55,9 +56,9 @@ export default function FeaturedBuild() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className="relative overflow-hidden"
+          className="relative overflow-hidden featured-build-card"
           style={{
-            height: "480px",
+            height: "clamp(320px, 42vw, 480px)",
             borderRadius: "16px",
             backdropFilter: "blur(15px)",
             WebkitBackdropFilter: "blur(15px)",
@@ -91,11 +92,11 @@ export default function FeaturedBuild() {
           />
 
           {/* Inner layout */}
-          <div className="relative z-10 flex h-full">
+          <div className="relative z-10 flex h-full featured-build-inner">
             {/* LEFT 60% — content */}
             <div
-              className="flex flex-col justify-center gap-6 px-10 py-10"
-              style={{ width: "60%" }}
+              className="flex flex-col justify-center gap-6 featured-build-content"
+              style={{ width: "60%", padding: "clamp(24px, 4vw, 40px)" }}
             >
               {/* Tag */}
               <p

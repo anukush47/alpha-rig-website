@@ -34,11 +34,17 @@
 }
 
 html {
-  scroll-behavior: smooth;
   height: 100%;
   /* Prevent layout shift during font load */
   text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+}
+
+/* Respect user reduced-motion preference for scroll */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
@@ -50,6 +56,47 @@ body {
   min-height: 100%;
   /* Compositor-layer for the root — keeps scroll jank off the main thread */
   overscroll-behavior: none;
+}
+
+/* ── Dynamic viewport height (fixes iOS Safari address-bar overlap) ──────────
+   Falls back to 100vh on browsers that don't support dvh.
+   ─────────────────────────────────────────────────────────────────────────── */
+@supports (min-height: 100dvh) {
+  .min-h-screen {
+    min-height: 100dvh;
+  }
+}
+
+/* ── Touch optimizations ─────────────────────────────────────────────────────
+   • touch-action: manipulation  — eliminates the 300 ms tap delay browsers add
+     when they detect a possible double-tap-to-zoom gesture.
+   • -webkit-tap-highlight-color — removes the blue/grey flash iOS shows on tap.
+   ─────────────────────────────────────────────────────────────────────────── */
+button,
+a,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+label {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Tactile press feedback — only on touch devices (no hover pointer available) */
+@media (hover: none) and (pointer: coarse) {
+  button:active:not(:disabled),
+  a:active {
+    transform: scale(0.97);
+    transition: transform 0.08s ease;
+  }
+}
+
+/* ── Safe-area insets (iPhone notch / Dynamic Island) ───────────────────────
+   Wrap nav + sections with this class for edge-to-edge safety.
+   ─────────────────────────────────────────────────────────────────────────── */
+.safe-x {
+  padding-left: max(1.5rem, env(safe-area-inset-left));
+  padding-right: max(1.5rem, env(safe-area-inset-right));
 }
 
 /* ── Glass utilities ─────────────────────────────────────────────────────────
@@ -93,6 +140,25 @@ body {
   transform: translateZ(0);
 }
 
+/* ── Mobile blur reductions (GPU performance on low-end phones) ─────────────
+   High blur + saturate combos are expensive on mobile GPUs. Halving the blur
+   radius is invisible to users but cuts compositing cost significantly.
+   ─────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .glass-navbar {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  .glass-card {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .glass-blog {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
 /* Cursor tracking glow */
 .cursor-glow {
   position: relative;
@@ -110,6 +176,42 @@ body {
   );
   pointer-events: none;
   z-index: 0;
+}
+
+/* ── Shared card empty-state grid pattern ───────────────────────────────────
+   Replaces duplicate inline SVG pattern definitions across BuildCard,
+   BlogCard, and ProductCard. Single CSS declaration, zero DOM overhead.
+   ─────────────────────────────────────────────────────────────────────────── */
+.card-no-image {
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 35px,
+      rgba(192, 57, 43, 0.06) 35px,
+      rgba(192, 57, 43, 0.06) 35.5px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 35px,
+      rgba(192, 57, 43, 0.06) 35px,
+      rgba(192, 57, 43, 0.06) 35.5px
+    );
+}
+
+/* ── FeaturedBuild — stack to column on mobile ──────────────────────────────── */
+@media (max-width: 640px) {
+  .featured-build-inner {
+    flex-direction: column !important;
+  }
+  .featured-build-content {
+    width: 100% !important;
+    justify-content: flex-start !important;
+  }
+  .featured-build-card .featured-build-inner > div:last-child {
+    display: none !important;
+  }
 }
 
 /* Blog ToC sidebar — hide below 900px */

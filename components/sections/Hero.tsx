@@ -199,7 +199,7 @@ export default function Hero() {
       className="relative w-full min-h-screen flex items-center"
       style={{
         background: "#0A0A0A",
-        paddingTop: "100px", // clear floating navbar
+        paddingTop: "clamp(72px, 12vw, 100px)", // clear floating navbar
       }}
     >
       {/* Background radial glow */}

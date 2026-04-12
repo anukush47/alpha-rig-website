@@ -34,8 +34,8 @@ export default function BuildsGrid({ builds }: { builds: BuildSummary[] }) {
         }}
       >
         <div
-          className="mx-auto px-6 py-4 flex items-center gap-3 overflow-x-auto scrollbar-none"
-          style={{ maxWidth: "1200px" }}
+          className="mx-auto px-6 py-2 flex items-center gap-3 overflow-x-auto scrollbar-none"
+          style={{ maxWidth: "1200px", WebkitOverflowScrolling: "touch" as React.CSSProperties["WebkitOverflowScrolling"] }}
         >
           {FILTERS.map(({ label, value }) => {
             const isActive = active === value;
@@ -45,9 +45,9 @@ export default function BuildsGrid({ builds }: { builds: BuildSummary[] }) {
                 onClick={() => setActive(value)}
                 style={{
                   fontFamily: "var(--font-mono)",
-                  fontSize: "11px",
+                  fontSize: "12px",
                   letterSpacing: "1.5px",
-                  padding: "7px 16px",
+                  padding: "12px 16px",
                   borderRadius: "6px",
                   border: "none",
                   cursor: "pointer",
@@ -55,6 +55,7 @@ export default function BuildsGrid({ builds }: { builds: BuildSummary[] }) {
                   transition: "all 0.2s ease",
                   background: isActive ? "#C0392B" : "#1A1A1A",
                   color: isActive ? "#ffffff" : "#888888",
+                  minHeight: "44px",
                 }}
                 onMouseEnter={(e) => {
                   if (!isActive) (e.currentTarget as HTMLElement).style.color = "#C0392B";
