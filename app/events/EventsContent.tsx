@@ -8,7 +8,9 @@ import { gameColor } from "@/components/ui/EventCard";
 import type { EventFull } from "@/lib/queries";
 
 function fmtDate(iso: string) {
-  return new Date(iso).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }).toUpperCase();
+  return new Date(iso)
+    .toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })
+    .toUpperCase();
 }
 
 function PastCard({ event }: { event: EventFull }) {
@@ -53,6 +55,25 @@ function PastCard({ event }: { event: EventFull }) {
   );
 }
 
+function RoleCard({ role, name, description, index }: { role: string; name: string; description: string; index: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="flex flex-col gap-4 p-6"
+      style={{ backdropFilter: "blur(15px)", WebkitBackdropFilter: "blur(15px)", background: "rgba(17,17,17,0.7)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "14px" }}
+    >
+      <div className="flex flex-col gap-1">
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: "9px", letterSpacing: "3px", color: "#C0392B", textTransform: "uppercase" }}>{role}</span>
+        <p style={{ fontFamily: "var(--font-body)", fontWeight: 700, fontSize: "18px", color: "#ffffff" }}>{name}</p>
+      </div>
+      <p style={{ fontFamily: "var(--font-body)", fontSize: "14px", color: "#666666", lineHeight: 1.7 }}>{description}</p>
+    </motion.div>
+  );
+}
+
 export default function EventsContent({ events }: { events: EventFull[] }) {
   const upcoming = events.filter((e) => e.status !== "completed");
   const past = events.filter((e) => e.status === "completed");
@@ -69,7 +90,7 @@ export default function EventsContent({ events }: { events: EventFull[] }) {
         </section>
       )}
 
-      {/* ── UPCOMING EVENTS GRID ── */}
+      {/* ── UPCOMING EVENTS ── */}
       {upcoming.length > 0 && (
         <section className="w-full py-20" style={{ background: "#0A0A0A", borderTop: "1px solid #111" }}>
           <div className="mx-auto px-6" style={{ maxWidth: "1200px" }}>
@@ -99,7 +120,6 @@ export default function EventsContent({ events }: { events: EventFull[] }) {
               </h2>
             </motion.div>
           </div>
-
           <div className="mx-auto pl-6" style={{ maxWidth: "1200px", overflowX: "auto", paddingBottom: "16px" }}>
             <div className="flex gap-4" style={{ width: "max-content" }}>
               {past.map((event) => (
@@ -110,13 +130,46 @@ export default function EventsContent({ events }: { events: EventFull[] }) {
         </section>
       )}
 
-      {/* Empty state */}
+      {/* ── EMPTY STATE ── */}
       {upcoming.length === 0 && past.length === 0 && (
         <section className="w-full py-32 flex flex-col items-center" style={{ background: "#0A0A0A" }}>
           <p style={{ fontFamily: "var(--font-display)", fontSize: "2rem", color: "#222", letterSpacing: "0.06em" }}>NO EVENTS YET</p>
           <p style={{ fontFamily: "var(--font-body)", fontSize: "14px", color: "#444", marginTop: "12px" }}>Add events in the Sanity Studio to see them here.</p>
         </section>
       )}
+
+      {/* ── TEAM SECTION ── */}
+      <section className="w-full py-20" style={{ background: "#0A0A0A", borderTop: "1px solid #111" }}>
+        <div className="mx-auto px-6" style={{ maxWidth: "1200px" }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="mb-4">
+            <p style={{ fontFamily: "var(--font-mono)", fontSize: "10px", letterSpacing: "4px", color: "#C0392B", marginBottom: "12px" }}>// THE CREW</p>
+            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(36px, 5vw, 48px)", color: "#ffffff", letterSpacing: "0.02em", lineHeight: 0.95 }}>
+              OUR BATTLE TEAM
+            </h2>
+          </motion.div>
+
+          <motion.p initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }} style={{ fontFamily: "var(--font-body)", fontSize: "16px", color: "#666", maxWidth: "560px", lineHeight: 1.7, marginBottom: "40px" }}>
+            Every Alpha Rig event is run by a dedicated production team — from venue setup and bracket management to live commentary and post-event media.
+          </motion.p>
+
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+            <RoleCard index={0} role="EVENT DIRECTOR" name="Open Position" description="Responsible for end-to-end event logistics — venue coordination, bracket management, team communications, and day-of operations. 3+ years event management experience preferred." />
+            <RoleCard index={1} role="LEAD COMMENTATOR" name="Open Position" description="Voice of the event. Handles play-by-play and color commentary across all Alpha Rig broadcasts. Deep knowledge of the featured game title required. Bilingual (Hindi/English) preferred." />
+            <RoleCard index={2} role="MEDIA & PRODUCTION" name="Open Position" description="Manages OBS/stream setup, graphics overlay, on-site photography, and post-event highlight reels. Handles social media rollout during and after the event." />
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.35 }} className="mt-10 flex justify-center">
+            <Link
+              href="/contact?subject=events-team"
+              style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: "14px", letterSpacing: "0.06em", color: "#C0392B", padding: "13px 32px", borderRadius: "8px", border: "1px solid rgba(192,57,43,0.35)", textDecoration: "none", transition: "all 0.2s" }}
+              onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.background = "#C0392B"; el.style.color = "#ffffff"; }}
+              onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.background = "transparent"; el.style.color = "#C0392B"; }}
+            >
+              JOIN THE TEAM →
+            </Link>
+          </motion.div>
+        </div>
+      </section>
     </>
   );
 }
