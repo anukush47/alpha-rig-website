@@ -411,151 +411,108 @@ export default function Footer() {
         {/* ── Our Verticals ─────────────────────────────────────────────────── */}
         <div
           style={{
-            position: "relative",
-            borderRadius: "20px",
-            overflow: "hidden",
-            padding: "48px 40px",
+            borderTop: "1px solid rgba(255,255,255,0.06)",
+            paddingTop: "40px",
             marginBottom: "40px",
             textAlign: "center",
-            background: "rgba(255,255,255,0.02)",
-            border: "1px solid rgba(255,255,255,0.07)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
           }}
         >
-          {/* top-left red glow */}
-          <div aria-hidden style={{ position: "absolute", top: "-60px", left: "-60px", width: "280px", height: "280px", borderRadius: "50%", background: "radial-gradient(circle, rgba(192,57,43,0.18) 0%, transparent 70%)", pointerEvents: "none" }} />
-          {/* bottom-right subtle glow */}
-          <div aria-hidden style={{ position: "absolute", bottom: "-60px", right: "-60px", width: "280px", height: "280px", borderRadius: "50%", background: "radial-gradient(circle, rgba(192,57,43,0.10) 0%, transparent 70%)", pointerEvents: "none" }} />
-          {/* top specular */}
-          <div aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, height: "1px", background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.14) 30%, rgba(255,255,255,0.14) 70%, transparent)" }} />
-
-          {/* label */}
-          <p style={{ fontFamily: "var(--font-mono)", fontSize: "9px", letterSpacing: "4px", color: "#C0392B", textTransform: "uppercase", marginBottom: "8px", position: "relative" }}>
-            // ALPHA RIG UNIVERSE
-          </p>
-          <h3
+          <p
             style={{
-              fontFamily: "var(--font-bebas)",
-              fontSize: "clamp(28px, 4vw, 38px)",
-              letterSpacing: "0.06em",
-              color: "#ffffff",
-              marginBottom: "36px",
-              position: "relative",
+              fontFamily: "var(--font-mono)",
+              fontSize: "9px",
+              letterSpacing: "3px",
+              color: "rgba(255,255,255,0.25)",
+              textTransform: "uppercase",
+              marginBottom: "20px",
             }}
           >
-            OUR VERTICALS
-          </h3>
-
-          {/* Cards row */}
-          <div
-            className="flex flex-wrap gap-4"
-            style={{ justifyContent: "center", position: "relative" }}
-          >
-            {/* Alpha Zen-X */}
+            Our Verticals
+          </p>
+          <div className="flex flex-wrap gap-3" style={{ justifyContent: "center" }}>
+            {/* Alpha Zen-X — links out */}
             <a
               href="https://alphazenx.com"
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                display: "flex",
-                flexDirection: "column",
+                display: "inline-flex",
                 alignItems: "center",
-                gap: "12px",
-                padding: "28px 32px",
-                borderRadius: "14px",
-                backdropFilter: "blur(20px)",
-                WebkitBackdropFilter: "blur(20px)",
-                background: "rgba(192,57,43,0.07)",
-                border: "1px solid rgba(192,57,43,0.25)",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 32px rgba(192,57,43,0.12)",
+                gap: "8px",
+                padding: "10px 20px",
+                borderRadius: "10px",
+                backdropFilter: "blur(16px)",
+                WebkitBackdropFilter: "blur(16px)",
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.09)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
+                fontFamily: "var(--font-body)",
+                fontWeight: 600,
+                fontSize: "13px",
+                letterSpacing: "0.04em",
+                color: "rgba(255,255,255,0.55)",
                 textDecoration: "none",
-                minWidth: "160px",
-                transition: "transform 0.2s, background 0.2s, box-shadow 0.2s, border-color 0.2s",
-                cursor: "pointer",
+                transition: "color 0.2s, background 0.2s, border-color 0.2s",
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.transform = "translateY(-4px)";
-                el.style.background = "rgba(192,57,43,0.14)";
-                el.style.borderColor = "rgba(192,57,43,0.5)";
-                el.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.12), 0 16px 48px rgba(192,57,43,0.25)";
+                el.style.color = "#ffffff";
+                el.style.background = "rgba(255,255,255,0.08)";
+                el.style.borderColor = "rgba(255,255,255,0.18)";
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.transform = "translateY(0)";
-                el.style.background = "rgba(192,57,43,0.07)";
-                el.style.borderColor = "rgba(192,57,43,0.25)";
-                el.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 32px rgba(192,57,43,0.12)";
+                el.style.color = "rgba(255,255,255,0.55)";
+                el.style.background = "rgba(255,255,255,0.04)";
+                el.style.borderColor = "rgba(255,255,255,0.09)";
               }}
             >
-              {/* icon */}
-              <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "rgba(192,57,43,0.15)", border: "1px solid rgba(192,57,43,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C0392B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="12 2 2 7 12 12 22 7 12 2" /><polyline points="2 17 12 22 22 17" /><polyline points="2 12 12 17 22 12" />
-                </svg>
-              </div>
-              <div>
-                <p style={{ fontFamily: "var(--font-bebas)", fontSize: "20px", letterSpacing: "0.05em", color: "#ffffff", lineHeight: 1 }}>ALPHA ZEN-X</p>
-                <p style={{ fontFamily: "var(--font-mono)", fontSize: "8px", letterSpacing: "1.5px", color: "rgba(192,57,43,0.8)", marginTop: "4px" }}>alphazenx.com ↗</p>
-              </div>
+              Alpha Zen-X
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}>
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
             </a>
 
-            {/* Codexa Syndicates */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "12px",
-                padding: "28px 32px",
-                borderRadius: "14px",
-                backdropFilter: "blur(20px)",
-                WebkitBackdropFilter: "blur(20px)",
-                background: "rgba(52,152,219,0.06)",
-                border: "1px solid rgba(52,152,219,0.18)",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06)",
-                minWidth: "160px",
-              }}
-            >
-              <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "rgba(52,152,219,0.12)", border: "1px solid rgba(52,152,219,0.25)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(52,152,219,0.8)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" />
-                </svg>
+            {/* Codexa Syndicates — no external link yet */}
+            {[
+              { label: "Codexa Syndicates" },
+              { label: "Alpha Brew" },
+            ].map(({ label }) => (
+              <div
+                key={label}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "10px 20px",
+                  borderRadius: "10px",
+                  backdropFilter: "blur(16px)",
+                  WebkitBackdropFilter: "blur(16px)",
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.09)",
+                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
+                  fontFamily: "var(--font-body)",
+                  fontWeight: 600,
+                  fontSize: "13px",
+                  letterSpacing: "0.04em",
+                  color: "rgba(255,255,255,0.35)",
+                }}
+              >
+                {label}
+                <span
+                  style={{
+                    marginLeft: "10px",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "8px",
+                    letterSpacing: "1.5px",
+                    color: "rgba(255,255,255,0.2)",
+                  }}
+                >
+                  COMING SOON
+                </span>
               </div>
-              <div>
-                <p style={{ fontFamily: "var(--font-bebas)", fontSize: "20px", letterSpacing: "0.05em", color: "rgba(255,255,255,0.5)", lineHeight: 1 }}>CODEXA SYNDICATES</p>
-                <p style={{ fontFamily: "var(--font-mono)", fontSize: "8px", letterSpacing: "1.5px", color: "rgba(52,152,219,0.5)", marginTop: "4px" }}>COMING SOON</p>
-              </div>
-            </div>
-
-            {/* Alpha Brew */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "12px",
-                padding: "28px 32px",
-                borderRadius: "14px",
-                backdropFilter: "blur(20px)",
-                WebkitBackdropFilter: "blur(20px)",
-                background: "rgba(243,156,18,0.06)",
-                border: "1px solid rgba(243,156,18,0.18)",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06)",
-                minWidth: "160px",
-              }}
-            >
-              <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "rgba(243,156,18,0.12)", border: "1px solid rgba(243,156,18,0.25)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(243,156,18,0.8)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 8h1a4 4 0 010 8h-1" /><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z" /><line x1="6" y1="1" x2="6" y2="4" /><line x1="10" y1="1" x2="10" y2="4" /><line x1="14" y1="1" x2="14" y2="4" />
-                </svg>
-              </div>
-              <div>
-                <p style={{ fontFamily: "var(--font-bebas)", fontSize: "20px", letterSpacing: "0.05em", color: "rgba(255,255,255,0.5)", lineHeight: 1 }}>ALPHA BREW</p>
-                <p style={{ fontFamily: "var(--font-mono)", fontSize: "8px", letterSpacing: "1.5px", color: "rgba(243,156,18,0.5)", marginTop: "4px" }}>COMING SOON</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
