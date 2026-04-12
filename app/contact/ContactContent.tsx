@@ -509,8 +509,8 @@ export default function ContactContent() {
 
               <InfoRow
                 label="Location"
-                value="Durg, Chhattisgarh — 491001, India"
-                href="https://maps.google.com/?q=Durg,Chhattisgarh,India"
+                value="Chhindwara, Madhya Pradesh, India"
+                href="https://maps.google.com/?q=Chhindwara,Madhya+Pradesh,India"
                 icon={
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="currentColor" strokeWidth="1.5" />
@@ -584,8 +584,8 @@ export default function ContactContent() {
             {/* Google Maps embed */}
             <div style={{ borderRadius: "14px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)" }}>
               <iframe
-                title="Alpha Rig Location — Durg, Chhattisgarh"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59447.31697547261!2d81.2360396!3d21.1900183!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a294001e1ef14f7%3A0xcf5af984fb2ccfde!2sDurg%2C%20Chhattisgarh!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin"
+                title="Alpha Rig Location — Chhindwara, Madhya Pradesh"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d58849.45!2d78.9395!3d22.0574!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a27b8a2b2b2b2b3%3A0x1234567890abcdef!2sChhindwara%2C%20Madhya%20Pradesh!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin"
                 width="100%"
                 height="200"
                 style={{ border: 0, display: "block", filter: "invert(90%) hue-rotate(180deg) saturate(0.7) brightness(0.9)" }}

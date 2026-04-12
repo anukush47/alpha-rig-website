@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Esports Events",
   description:
     "Professional esports tournaments hosted by Alpha Rig — live commentary, media coverage, and serious prize pools. India's premier PC gaming event organiser.",
-  keywords: ["esports events India", "gaming tournaments Chhattisgarh", "VALORANT tournament India", "Alpha Rig events"],
+  keywords: ["esports events India", "gaming tournaments Madhya Pradesh", "VALORANT tournament India", "Alpha Rig events"],
   openGraph: {
     title: "Esports Events | Alpha Rig",
     description: "Full-scale professional esports tournaments — live, covered, unforgettable.",

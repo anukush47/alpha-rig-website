@@ -31,16 +31,16 @@ export const metadata: Metadata = {
     template: "%s | Alpha Rig",
   },
   description:
-    "Alpha Rig Private Limited — Custom-built gaming PCs, professional esports events, PC hardware blog, and online store. Based in Durg, Chhattisgarh, India.",
+    "Alpha Rig Private Limited — Custom-built gaming PCs, professional esports events, PC hardware blog, and online store. Based in Chhindwara, Madhya Pradesh, India.",
   keywords: [
     "custom gaming PC India",
-    "custom built PC Chhattisgarh",
+    "custom built PC Madhya Pradesh",
     "esports events India",
     "PC components online",
     "gaming PC builder India",
     "Alpha Rig",
-    "custom PC Durg",
-    "gaming PC Chhattisgarh",
+    "custom PC Chhindwara",
+    "gaming PC Madhya Pradesh",
   ],
   authors: [{ name: "Alpha Rig Private Limited" }],
   creator: "Alpha Rig Private Limited",
@@ -51,14 +51,14 @@ export const metadata: Metadata = {
     siteName: "Alpha Rig",
     title: "Alpha Rig | Custom PCs · Esports Events · PC Culture India",
     description:
-      "Alpha Rig Private Limited — Custom-built gaming PCs, professional esports events, PC hardware blog, and online store. Based in Durg, Chhattisgarh, India.",
+      "Alpha Rig Private Limited — Custom-built gaming PCs, professional esports events, PC hardware blog, and online store. Based in Chhindwara, Madhya Pradesh, India.",
     images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Alpha Rig" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Alpha Rig | Custom PCs · Esports Events · PC Culture India",
     description:
-      "Alpha Rig Private Limited — Custom-built gaming PCs, professional esports events, and PC hardware. Based in Durg, Chhattisgarh, India.",
+      "Alpha Rig Private Limited — Custom-built gaming PCs, professional esports events, and PC hardware. Based in Chhindwara, Madhya Pradesh, India.",
     images: ["/og-image.jpg"],
   },
   robots: {
@@ -90,8 +90,8 @@ export default function RootLayout({
               logo: "https://alpharig.in/logo.png",
               address: {
                 "@type": "PostalAddress",
-                addressLocality: "Durg",
-                addressRegion: "Chhattisgarh",
+                addressLocality: "Chhindwara",
+                addressRegion: "Madhya Pradesh",
                 addressCountry: "IN",
               },
               contactPoint: {

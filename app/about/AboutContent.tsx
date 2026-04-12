@@ -247,7 +247,7 @@ export default function AboutContent() {
               marginTop: "12px",
             }}
           >
-            Built from scratch. Rooted in Durg. Reaching everywhere.
+            Built from scratch. Rooted in Chhindwara. Reaching everywhere.
           </motion.p>
         </div>
       </section>
@@ -301,15 +301,15 @@ export default function AboutContent() {
                 padding: "4px 12px",
                 borderRadius: "4px",
               }}>
-                DURG, CG
+                CHHINDWARA, MP
               </span>
             </motion.div>
 
             {/* Story paragraphs */}
             {[
-              "Alpha Rig started in 2022 with one desk, one soldering iron, and a genuine frustration — Chhattisgarh had no serious custom PC culture to speak of. Anupam Kushwaha had spent years watching enthusiasts in his city overpay for mediocre builds or settle for off-the-shelf machines that never matched their vision.",
+              "Alpha Rig started in 2022 with one desk, one soldering iron, and a genuine frustration — Madhya Pradesh had no serious custom PC culture to speak of. Anupam Kushwaha had spent years watching enthusiasts in his city overpay for mediocre builds or settle for off-the-shelf machines that never matched their vision.",
               "So he built one. Then another. Word spread the way it does in a tight-knit city — person to person, over chai and benchmark scores. By mid-2022, Alpha Rig had its first real workshop and a waitlist. Not because of ads or influencers, but because the machines genuinely performed.",
-              "The mission has never changed: bring world-class PC culture to the heart of India. Not just builds — events, content, community, honest reviews, and a space where hardware obsession is understood and respected. Alpha Rig is still growing, still bootstrapped, and still built entirely from Durg.",
+              "The mission has never changed: bring world-class PC culture to the heart of India. Not just builds — events, content, community, honest reviews, and a space where hardware obsession is understood and respected. Alpha Rig is still growing, still bootstrapped, and still built entirely from Chhindwara.",
             ].map((para, i) => (
               <motion.p key={i} {...fu(0.26 + i * 0.1)} style={{
                 fontFamily: "var(--font-body)",
@@ -419,7 +419,7 @@ export default function AboutContent() {
             <ValueCard
               index={2}
               title="INDIA'S PC CULTURE"
-              body="Born in Durg, Chhattisgarh. We believe world-class hardware culture belongs everywhere — not just metros. We're building a scene that every city in India can eventually call its own."
+              body="Born in Chhindwara, Madhya Pradesh. We believe world-class hardware culture belongs everywhere — not just metros. We're building a scene that every city in India can eventually call its own."
             />
           </div>
         </div>

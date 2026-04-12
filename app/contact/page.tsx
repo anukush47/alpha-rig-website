@@ -4,8 +4,8 @@ import ContactContent from "./ContactContent";
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    "Get in touch with Alpha Rig — custom build inquiries, event partnerships, store questions, or just talk hardware. Based in Durg, Chhattisgarh, India.",
-  keywords: ["contact Alpha Rig", "custom PC inquiry India", "PC build inquiry Chhattisgarh"],
+    "Get in touch with Alpha Rig — custom build inquiries, event partnerships, store questions, or just talk hardware. Based in Chhindwara, Madhya Pradesh, India.",
+  keywords: ["contact Alpha Rig", "custom PC inquiry India", "PC build inquiry Madhya Pradesh"],
   openGraph: {
     title: "Contact Alpha Rig",
     description: "Builds, events, collabs — reach the Alpha Rig team directly.",

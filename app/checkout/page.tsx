@@ -281,8 +281,8 @@ export default function CheckoutPage() {
             <GlassInput label="Address Line 1" value={form.address1} onChange={field("address1")} placeholder="House / Flat / Street" required />
             <GlassInput label="Address Line 2" value={form.address2} onChange={field("address2")} placeholder="Landmark, Colony (optional)" />
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px" }}>
-              <GlassInput label="City" value={form.city} onChange={field("city")} placeholder="Durg" required />
-              <GlassInput label="State" value={form.state} onChange={field("state")} placeholder="Chhattisgarh" required />
+              <GlassInput label="City" value={form.city} onChange={field("city")} placeholder="Chhindwara" required />
+              <GlassInput label="State" value={form.state} onChange={field("state")} placeholder="Madhya Pradesh" required />
               <GlassInput label="Pincode" value={form.pincode} onChange={field("pincode")} placeholder="490001" required />
             </div>
 

@@ -293,7 +293,7 @@ export default function Footer() {
                 letterSpacing: "0.05em",
               }}
             >
-              Durg, Chhattisgarh, India
+              Chhindwara, Madhya Pradesh, India
             </p>
 
             {/* Social icons */}
