@@ -3,9 +3,16 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 
-export default function NewsletterStrip() {
-  const [email, setEmail]   = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+export default function NewsletterStrip({
+  source = "newsletter-strip",
+  tags   = [] as string[],
+}: {
+  source?: string;
+  tags?:   string[];
+}) {
+  const [email, setEmail]     = useState("");
+  const [status, setStatus]   = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [message, setMessage] = useState("");
   const inputRef            = useRef<HTMLInputElement>(null);
   const sectionRef          = useRef<HTMLElement>(null);
   const cursorGlowRef       = useRef<HTMLDivElement>(null);
@@ -34,9 +41,24 @@ export default function NewsletterStrip() {
     e.preventDefault();
     if (!email || !email.includes("@")) { inputRef.current?.focus(); return; }
     setStatus("loading");
-    await new Promise((r) => setTimeout(r, 900));
-    setStatus("success");
-    setEmail("");
+    try {
+      const res  = await fetch("/api/newsletter", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ email, source, tags }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Unknown error");
+      setMessage(
+        data.status === "already_subscribed"
+          ? "YOU'RE ALREADY ON THE LIST"
+          : "YOU'RE IN — CHECK YOUR INBOX"
+      );
+      setStatus("success");
+      setEmail("");
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
@@ -180,7 +202,7 @@ export default function NewsletterStrip() {
               borderRadius: "10px",
             }}
           >
-            ✓ YOU&apos;RE IN — CHECK YOUR INBOX
+            ✓ {message}
           </motion.div>
         ) : (
           <form
@@ -263,6 +285,17 @@ export default function NewsletterStrip() {
               {status === "loading" ? "SENDING..." : "SUBSCRIBE"}
             </button>
           </form>
+        )}
+
+        {status === "error" && (
+          <p style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "10px",
+            letterSpacing: "1.5px",
+            color: "#E74C3C",
+          }}>
+            SOMETHING WENT WRONG — PLEASE TRY AGAIN
+          </p>
         )}
 
         {/* Privacy note */}
