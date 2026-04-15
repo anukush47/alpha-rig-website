@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Rajdhani, Space_Mono } from "next/font/google";
 import SiteShell from "@/components/layout/SiteShell";
+import PageLoader from "@/components/ui/PageLoader";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { GoogleTagManagerHead, GoogleTagManagerBody } from "@/components/analytics/GoogleTagManager";
 import { Analytics } from "@vercel/analytics/react";
@@ -115,6 +116,7 @@ export default function RootLayout({
             }),
           }}
         />
+        <PageLoader />
         <SiteShell>{children}</SiteShell>
         <GoogleTagManagerHead />
         <GoogleAnalytics />
