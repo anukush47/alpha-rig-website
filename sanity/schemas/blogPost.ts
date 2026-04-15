@@ -22,9 +22,10 @@ export const blogPost = defineType({
   type: "document",
 
   groups: [
-    { name: "content",  title: "Content",    default: true },
-    { name: "meta",     title: "Meta"                      },
-    { name: "seo",      title: "SEO"                       },
+    { name: "content",       title: "Content",       default: true },
+    { name: "meta",          title: "Meta"                         },
+    { name: "seo",           title: "SEO"                          },
+    { name: "monetization",  title: "Monetization"                 },
   ],
 
   fields: [
@@ -273,19 +274,67 @@ export const blogPost = defineType({
       options: { layout: "tags" },
       description: "5–8 keywords: mix of short-tail and long-tail",
     }),
+
+    // ── Series ────────────────────────────────────────────────────────────────
+    defineField({
+      name: "series",
+      title: "Series",
+      type: "reference",
+      to: [{ type: "blogSeries" }],
+      group: "meta",
+      description: "Add this post to a content series",
+    }),
+
+    // ── Engagement ────────────────────────────────────────────────────────────
+    defineField({
+      name: "likes",
+      title: "Likes / Claps",
+      type: "number",
+      group: "meta",
+      initialValue: 0,
+      readOnly: true,
+      description: "Auto-incremented via API when readers clap — do not edit manually",
+      validation: (R) => R.min(0),
+    }),
+
+    // ── Monetization ─────────────────────────────────────────────────────────
+    defineField({
+      name: "sponsored",
+      title: "Sponsored Post",
+      type: "boolean",
+      group: "monetization",
+      initialValue: false,
+      description: "Shows a 'Sponsored' badge on the post card and article header",
+    }),
+    defineField({
+      name: "sponsorName",
+      title: "Sponsor Name",
+      type: "string",
+      group: "monetization",
+      description: "Shown as 'Presented by [name]'",
+      hidden: ({ document }) => !document?.sponsored,
+    }),
+    defineField({
+      name: "sponsorUrl",
+      title: "Sponsor URL",
+      type: "url",
+      group: "monetization",
+      hidden: ({ document }) => !document?.sponsored,
+    }),
   ],
 
   preview: {
     select: {
-      title:    "title",
-      author:   "author",
-      category: "category",
-      media:    "coverImage",
-      featured: "featured",
+      title:     "title",
+      author:    "author",
+      category:  "category",
+      media:     "coverImage",
+      featured:  "featured",
+      sponsored: "sponsored",
     },
-    prepare({ title, author, category, media, featured }) {
+    prepare({ title, author, category, media, featured, sponsored }) {
       return {
-        title:    `${featured ? "⭐ " : ""}${title}`,
+        title:    `${featured ? "⭐ " : ""}${sponsored ? "💰 " : ""}${title}`,
         subtitle: `${author ?? "—"} · ${category ?? "Uncategorised"}`,
         media,
       };
