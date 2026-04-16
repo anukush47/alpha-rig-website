@@ -45,8 +45,15 @@ export default function SmoothScrollProvider({
     }
     rafRef.current = requestAnimationFrame(raf);
 
+    // Recalculate scroll limit whenever the window resizes or content changes
+    function onResize() {
+      lenis.resize();
+    }
+    window.addEventListener("resize", onResize, { passive: true });
+
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("resize", onResize);
       lenis.destroy();
       lenisRef.current = null;
       delete (window as unknown as Record<string, unknown>).__lenis__;

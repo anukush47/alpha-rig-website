@@ -34,8 +34,8 @@
 }
 
 html {
-  height: 100%;
-  /* Prevent layout shift during font load */
+  /* Do NOT set height:100% — it caps scrollHeight to the viewport and breaks
+     Lenis (scroll limit = 0). Let html grow naturally with content. */
   text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
@@ -53,7 +53,7 @@ body {
   font-family: var(--font-body), 'Rajdhani', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-height: 100%;
+  min-height: 100dvh;
   /* Compositor-layer for the root — keeps scroll jank off the main thread */
   overscroll-behavior: none;
 }

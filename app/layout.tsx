@@ -86,9 +86,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bebasNeue.variable} ${rajdhani.variable} ${spaceMono.variable} h-full`}
+      className={`${bebasNeue.variable} ${rajdhani.variable} ${spaceMono.variable}`}
     >
-      <body className="min-h-full flex flex-col antialiased">
+      <body className="min-h-screen flex flex-col antialiased">
         <GoogleTagManagerBody />
         <script
           type="application/ld+json"
