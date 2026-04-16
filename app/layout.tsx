@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Rajdhani, Space_Mono } from "next/font/google";
+import Script from "next/script";
 import SiteShell from "@/components/layout/SiteShell";
 import PageLoader from "@/components/ui/PageLoader";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
@@ -121,6 +122,13 @@ export default function RootLayout({
         <GoogleTagManagerHead />
         <GoogleAnalytics />
         <Analytics />
+        {/* Google AdSense */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4083701621027019"
+          crossOrigin="anonymous"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

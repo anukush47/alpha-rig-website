@@ -7,12 +7,20 @@ import {
   getAllBlogPosts,
   getBlogPostBySlug,
   getBlogPostsByCategory,
+  getTrendingPosts,
 } from "@/lib/queries";
 import { urlFor, ogImage } from "@/lib/sanity";
 import BlogCard from "@/components/ui/BlogCard";
 import TableOfContents from "./TableOfContents";
 import { BlogViewTracker } from "./BlogViewTracker";
 import type { TocHeading } from "./TableOfContents";
+import type { TypedObject } from "@portabletext/types";
+import ReadingProgress from "@/components/ui/ReadingProgress";
+import ShareBar from "@/components/ui/ShareBar";
+import ClapButton from "@/components/ui/ClapButton";
+import AuthorCard from "@/components/ui/AuthorCard";
+import NewsletterInline from "@/components/ui/NewsletterInline";
+import SponsoredSlot from "@/components/ui/SponsoredSlot";
 
 export const revalidate = 60;
 
@@ -72,6 +80,18 @@ function formatDate(iso: string): string {
   });
 }
 
+// Split body into 3 sections: intro (2–3 blocks) | first half | second half
+function splitBody(body: TypedObject[]): [TypedObject[], TypedObject[], TypedObject[]] {
+  if (body.length < 4) return [body, [], []];
+  const introEnd = Math.min(3, Math.floor(body.length * 0.2));
+  const midEnd   = introEnd + Math.floor((body.length - introEnd) / 2);
+  return [
+    body.slice(0, introEnd),
+    body.slice(introEnd, midEnd),
+    body.slice(midEnd),
+  ];
+}
+
 // ─── Static params ────────────────────────────────────────────────────────────
 
 export async function generateStaticParams() {
@@ -96,7 +116,6 @@ export async function generateMetadata({
 
   const description = post.seoDescription ?? post.excerpt;
   const imageUrl = post.coverImage?.asset ? ogImage(post.coverImage) : undefined;
-  // Use absolute title for seoTitle (avoids template doubling), template for plain title
   const titleField = post.seoTitle
     ? { absolute: post.seoTitle }
     : post.title;
@@ -298,7 +317,7 @@ function makePortableTextComponents(): PortableTextComponents {
         );
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      code: ({ value }: { value: any }) => (
+      codeBlock: ({ value }: { value: any }) => (
         <pre
           style={{
             background: "#111111",
@@ -321,6 +340,80 @@ function makePortableTextComponents(): PortableTextComponents {
           </code>
         </pre>
       ),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      proTip: ({ value }: { value: any }) => (
+        <div
+          style={{
+            border: "1px solid rgba(192,57,43,0.3)",
+            borderLeft: "3px solid #C0392B",
+            background: "rgba(192,57,43,0.05)",
+            padding: "20px 24px",
+            margin: "28px 0",
+            borderRadius: "0 6px 6px 0",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "var(--font-space-mono)",
+              fontSize: "10px",
+              color: "#C0392B",
+              letterSpacing: "0.2em",
+              margin: "0 0 8px",
+              textTransform: "uppercase",
+            }}
+          >
+            Pro Tip
+          </p>
+          <p
+            style={{
+              fontFamily: "var(--font-rajdhani)",
+              fontSize: "16px",
+              color: "#aaa",
+              margin: 0,
+              lineHeight: 1.7,
+            }}
+          >
+            {value?.tip ?? ""}
+          </p>
+        </div>
+      ),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      comparisonTable: ({ value }: { value: any }) => {
+        const rows = value?.rows ?? [];
+        const cols = rows[0] ? ["feature", "a", "b", ...(rows[0].c != null ? ["c"] : [])] : [];
+        return (
+          <div style={{ overflowX: "auto", margin: "28px 0" }}>
+            {value?.caption && (
+              <p style={{ fontFamily: "var(--font-space-mono)", fontSize: "11px", color: "#555", marginBottom: "12px" }}>
+                {value.caption}
+              </p>
+            )}
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <tbody>
+                {rows.map((row: Record<string, string>, i: number) => (
+                  <tr key={i} style={{ borderBottom: "1px solid #1e1e1e" }}>
+                    {cols.map((col) => (
+                      <td
+                        key={col}
+                        style={{
+                          padding: "12px 16px",
+                          fontFamily: col === "feature" ? "var(--font-space-mono)" : "var(--font-rajdhani)",
+                          fontSize: col === "feature" ? "11px" : "15px",
+                          color: col === "feature" ? "#666" : "#aaa",
+                          background: i % 2 === 0 ? "#0d0d0d" : "transparent",
+                          letterSpacing: col === "feature" ? "0.05em" : "normal",
+                        }}
+                      >
+                        {row[col] ?? "—"}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+      },
     },
 
     list: {
@@ -372,7 +465,10 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = await getBlogPostBySlug(slug);
+  const [post, trending] = await Promise.all([
+    getBlogPostBySlug(slug),
+    getTrendingPosts(5),
+  ]);
 
   if (!post) {
     return (
@@ -412,21 +508,19 @@ export default async function BlogPostPage({
     );
   }
 
-  const body = (post.body ?? []) as unknown[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const portableBody = body as any[];
-  const headings = extractHeadings(body);
-  const mins = readingTime(body);
+  const body = (post.body ?? []) as TypedObject[];
+  const headings = extractHeadings(body as unknown[]);
+  const mins = post.readingTime ?? readingTime(body as unknown[]);
+  const [bodyIntro, bodyMid, bodyEnd] = splitBody(body);
+  const trendingFiltered = trending.filter((p) => p._id !== post._id).slice(0, 4);
 
   const coverUrl = post.coverImage?.asset
     ? urlFor(post.coverImage).width(1200).height(560).fit("crop").auto("format").url()
     : null;
 
-  // Related posts: same category, exclude current
   let related = await getBlogPostsByCategory(post.category);
   related = related.filter((p) => p._id !== post._id).slice(0, 3);
 
-  // JSON-LD
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -443,18 +537,20 @@ export default async function BlogPostPage({
   };
 
   const ptComponents = makePortableTextComponents();
+  const hasSidebar = headings.length > 0 || trendingFiltered.length > 0;
 
   return (
     <>
-      {/* JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
       <BlogViewTracker title={post.title} />
+      <ReadingProgress />
 
       <main style={{ minHeight: "100vh", background: "#0A0A0A" }}>
+
         {/* ── Article header ── */}
         <header
           style={{
@@ -484,13 +580,7 @@ export default async function BlogPostPage({
             >
               The Rig Report
             </Link>
-            <span
-              style={{
-                fontFamily: "var(--font-space-mono)",
-                fontSize: "10px",
-                color: "#2a2a2a",
-              }}
-            >
+            <span style={{ fontFamily: "var(--font-space-mono)", fontSize: "10px", color: "#2a2a2a" }}>
               /
             </span>
             <span
@@ -505,6 +595,60 @@ export default async function BlogPostPage({
               {post.category}
             </span>
           </div>
+
+          {/* Sponsored notice */}
+          {post.sponsored && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                padding: "10px 16px",
+                background: "rgba(192,57,43,0.06)",
+                border: "1px solid rgba(192,57,43,0.2)",
+                borderRadius: "4px",
+                marginBottom: "24px",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "var(--font-space-mono)",
+                  fontSize: "9px",
+                  color: "#C0392B",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  background: "rgba(192,57,43,0.15)",
+                  padding: "3px 8px",
+                  borderRadius: "3px",
+                }}
+              >
+                Sponsored
+              </span>
+              {post.sponsorName && (
+                <span
+                  style={{
+                    fontFamily: "var(--font-rajdhani)",
+                    fontSize: "13px",
+                    color: "#888",
+                  }}
+                >
+                  Presented by{" "}
+                  {post.sponsorUrl ? (
+                    <a
+                      href={post.sponsorUrl}
+                      target="_blank"
+                      rel="noopener noreferrer sponsored"
+                      style={{ color: "#C0392B", textDecoration: "none" }}
+                    >
+                      {post.sponsorName}
+                    </a>
+                  ) : (
+                    post.sponsorName
+                  )}
+                </span>
+              )}
+            </div>
+          )}
 
           {/* Meta row */}
           <div
@@ -531,24 +675,17 @@ export default async function BlogPostPage({
             >
               {post.category}
             </span>
-            <span
-              style={{
-                fontFamily: "var(--font-space-mono)",
-                fontSize: "10px",
-                color: "#444",
-              }}
-            >
+            <span style={{ fontFamily: "var(--font-space-mono)", fontSize: "10px", color: "#444" }}>
               {formatDate(post.publishedAt)}
             </span>
-            <span
-              style={{
-                fontFamily: "var(--font-space-mono)",
-                fontSize: "10px",
-                color: "#333",
-              }}
-            >
+            <span style={{ fontFamily: "var(--font-space-mono)", fontSize: "10px", color: "#333" }}>
               {mins} min read
             </span>
+            {(post.likes ?? 0) > 0 && (
+              <span style={{ fontFamily: "var(--font-space-mono)", fontSize: "10px", color: "#555" }}>
+                {post.likes?.toLocaleString()} claps
+              </span>
+            )}
           </div>
 
           {/* Title */}
@@ -596,8 +733,7 @@ export default async function BlogPostPage({
                 width: "36px",
                 height: "36px",
                 borderRadius: "50%",
-                background:
-                  "linear-gradient(135deg, #C0392B 0%, rgba(192,57,43,0.4) 100%)",
+                background: "linear-gradient(135deg, #C0392B 0%, rgba(192,57,43,0.4) 100%)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -616,39 +752,16 @@ export default async function BlogPostPage({
               </span>
             </div>
             <div>
-              <p
-                style={{
-                  fontFamily: "var(--font-space-mono)",
-                  fontSize: "11px",
-                  color: "#ccc",
-                  margin: 0,
-                  letterSpacing: "0.05em",
-                }}
-              >
+              <p style={{ fontFamily: "var(--font-space-mono)", fontSize: "11px", color: "#ccc", margin: 0, letterSpacing: "0.05em" }}>
                 {post.author}
               </p>
-              <p
-                style={{
-                  fontFamily: "var(--font-space-mono)",
-                  fontSize: "10px",
-                  color: "#444",
-                  margin: 0,
-                }}
-              >
+              <p style={{ fontFamily: "var(--font-space-mono)", fontSize: "10px", color: "#444", margin: 0 }}>
                 {mins} min read · {formatDate(post.publishedAt)}
               </p>
             </div>
 
-            {/* Tags */}
             {post.tags?.length > 0 && (
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "6px",
-                  marginLeft: "auto",
-                }}
-              >
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginLeft: "auto" }}>
                 {post.tags.slice(0, 4).map((tag) => (
                   <span
                     key={tag}
@@ -680,7 +793,6 @@ export default async function BlogPostPage({
                 borderRadius: "12px",
                 overflow: "hidden",
                 border: "1px solid rgba(255,255,255,0.05)",
-                marginBottom: "0",
               }}
             >
               <Image
@@ -695,43 +807,180 @@ export default async function BlogPostPage({
           )}
         </header>
 
-        {/* ── Article body + ToC sidebar ── */}
+        {/* ── Article body + sidebars ── */}
         <div
+          className="blog-body-grid"
           style={{
-            maxWidth: "1160px",
+            maxWidth: "1240px",
             margin: "0 auto",
             padding: "56px 24px 80px",
             display: "grid",
-            gridTemplateColumns: headings.length > 0 ? "1fr 220px" : "1fr",
-            gap: "48px",
+            gridTemplateColumns: hasSidebar
+              ? "56px minmax(0,1fr) 240px"
+              : "56px minmax(0,1fr)",
+            gap: "32px",
             alignItems: "start",
           }}
         >
+          {/* Share bar column */}
+          <ShareBar title={post.title} />
+
           {/* Article body */}
           <article style={{ minWidth: 0 }}>
-            {body.length > 0 ? (
-              <PortableText value={portableBody} components={ptComponents} />
+
+            {/* Intro section */}
+            {bodyIntro.length > 0 ? (
+              <PortableText value={bodyIntro} components={ptComponents} />
             ) : (
-              <p
-                style={{
-                  fontFamily: "var(--font-rajdhani)",
-                  fontSize: "17px",
-                  color: "#555",
-                  fontStyle: "italic",
-                }}
-              >
+              <p style={{ fontFamily: "var(--font-rajdhani)", fontSize: "17px", color: "#555", fontStyle: "italic" }}>
                 No content yet.
               </p>
             )}
+
+            {/* After-intro sponsored slot */}
+            {bodyIntro.length > 0 && (
+              <SponsoredSlot position="blog-after-intro" />
+            )}
+
+            {/* Mid section */}
+            {bodyMid.length > 0 && (
+              <PortableText value={bodyMid} components={ptComponents} />
+            )}
+
+            {/* Mid-article newsletter + sponsored slot */}
+            {bodyMid.length > 0 && (
+              <>
+                <NewsletterInline />
+                <SponsoredSlot position="blog-mid" />
+              </>
+            )}
+
+            {/* Final section */}
+            {bodyEnd.length > 0 && (
+              <PortableText value={bodyEnd} components={ptComponents} />
+            )}
+
+            {/* End-of-article sponsored slot */}
+            <SponsoredSlot position="blog-end" />
+
+            {/* Author card */}
+            <AuthorCard name={post.author} bio={post.authorBio} />
+
+            {/* Clap row */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "12px",
+                padding: "48px 0 16px",
+                borderTop: "1px solid rgba(255,255,255,0.04)",
+                marginTop: "40px",
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: "var(--font-space-mono)",
+                  fontSize: "10px",
+                  color: "#444",
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
+                  margin: 0,
+                }}
+              >
+                Did this help you?
+              </p>
+              <ClapButton slug={post.slug.current} initialLikes={post.likes ?? 0} />
+              <p
+                style={{
+                  fontFamily: "var(--font-rajdhani)",
+                  fontSize: "14px",
+                  color: "#333",
+                  margin: 0,
+                }}
+              >
+                Tap to clap — you can clap more than once
+              </p>
+            </div>
           </article>
 
-          {/* ToC sidebar — only on desktop via CSS media query workaround */}
-          {headings.length > 0 && (
-            <aside
-              style={{ display: "block" }}
-              className="blog-toc-sidebar"
-            >
-              <TableOfContents headings={headings} />
+          {/* Right sidebar: ToC + Trending */}
+          {hasSidebar && (
+            <aside className="blog-sidebar">
+              {headings.length > 0 && (
+                <TableOfContents headings={headings} />
+              )}
+
+              {trendingFiltered.length > 0 && (
+                <div
+                  style={{
+                    marginTop: headings.length > 0 ? "32px" : "0",
+                    padding: "24px",
+                    border: "1px solid #1a1a1a",
+                    background: "#0d0d0d",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: "var(--font-space-mono)",
+                      fontSize: "9px",
+                      color: "#C0392B",
+                      letterSpacing: "0.2em",
+                      textTransform: "uppercase",
+                      margin: "0 0 16px",
+                    }}
+                  >
+                    Trending
+                  </p>
+                  <ol style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "16px" }}>
+                    {trendingFiltered.map((p, i) => (
+                      <li key={p._id} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+                        <span
+                          style={{
+                            fontFamily: "var(--font-bebas)",
+                            fontSize: "20px",
+                            color: "#2a2a2a",
+                            lineHeight: 1,
+                            flexShrink: 0,
+                            width: "20px",
+                            textAlign: "right",
+                          }}
+                        >
+                          {i + 1}
+                        </span>
+                        <div>
+                          <Link
+                            href={`/blog/${p.slug.current}`}
+                            style={{
+                              fontFamily: "var(--font-rajdhani)",
+                              fontSize: "13px",
+                              fontWeight: 600,
+                              color: "#aaa",
+                              textDecoration: "none",
+                              lineHeight: 1.4,
+                              display: "block",
+                            }}
+                          >
+                            {p.title}
+                          </Link>
+                          {(p.likes ?? 0) > 0 && (
+                            <span
+                              style={{
+                                fontFamily: "var(--font-space-mono)",
+                                fontSize: "9px",
+                                color: "#444",
+                                letterSpacing: "0.05em",
+                              }}
+                            >
+                              {p.likes?.toLocaleString()} claps
+                            </span>
+                          )}
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
             </aside>
           )}
         </div>
@@ -770,8 +1019,7 @@ export default async function BlogPostPage({
                 style={{
                   flex: 1,
                   height: "1px",
-                  background:
-                    "linear-gradient(to right, rgba(192,57,43,0.3), transparent)",
+                  background: "linear-gradient(to right, rgba(192,57,43,0.3), transparent)",
                 }}
               />
             </div>
@@ -802,19 +1050,6 @@ export default async function BlogPostPage({
                   borderRadius: "6px",
                   textDecoration: "none",
                   textTransform: "uppercase",
-                  transition: "background 0.2s, border-color 0.2s",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.background =
-                    "rgba(192,57,43,0.08)";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                    "#C0392B";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.background =
-                    "transparent";
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
-                    "rgba(192,57,43,0.3)";
                 }}
               >
                 ← All Articles
@@ -823,6 +1058,17 @@ export default async function BlogPostPage({
           </section>
         )}
       </main>
+
+      <style>{`
+        @media (max-width: 1024px) {
+          .blog-body-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .blog-sidebar {
+            display: none !important;
+          }
+        }
+      `}</style>
     </>
   );
 }

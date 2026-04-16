@@ -13,9 +13,10 @@ const QUICK_LINKS = [
 const VERTICALS = [
   { label: "Store",         href: "/store"         },
   { label: "Build With Us", href: "/build-with-us" },
+  { label: "Advertise",     href: "/advertise"     },
+  { label: "Partners",      href: "/sponsors"      },
   { label: "About Us",      href: "/about"         },
   { label: "Contact",       href: "/contact"       },
-  { label: "Careers",       href: "/about#careers" },
 ];
 
 function IconX() {

@@ -29,6 +29,8 @@ export interface BlogPostSummary {
   publishedAt: string;
   readingTime?: number;
   featured?: boolean;
+  likes?: number;
+  sponsored?: boolean;
   coverImage: SanityImage;
 }
 
@@ -37,6 +39,10 @@ export interface BlogPostFull extends BlogPostSummary {
   seoTitle?: string;
   seoDescription?: string;
   seoKeywords?: string[];
+  likes?: number;
+  sponsored?: boolean;
+  sponsorName?: string;
+  sponsorUrl?: string;
 }
 
 // Build
@@ -100,6 +106,8 @@ export interface ProductFull extends ProductSummary {
 const BLOG_SUMMARY = `
   _id, title, slug, excerpt, category, subcategories, tags,
   author, authorBio, publishedAt, readingTime, featured,
+  "likes": coalesce(likes, 0),
+  sponsored, sponsorName, sponsorUrl,
   coverImage { ..., asset-> }
 `;
 
@@ -141,9 +149,20 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPostFull | nu
       body,
       seoTitle,
       seoDescription,
-      seoKeywords
+      seoKeywords,
+      "likes": coalesce(likes, 0),
+      sponsored,
+      sponsorName,
+      sponsorUrl
     }`,
     { slug }
+  );
+}
+
+export async function getTrendingPosts(limit = 4): Promise<BlogPostSummary[]> {
+  return sanityClient.fetch(
+    `*[_type == "blogPost"] | order(coalesce(likes, 0) desc, publishedAt desc) [0...$limit] { ${BLOG_SUMMARY} }`,
+    { limit }
   );
 }
 
@@ -214,6 +233,60 @@ export async function getEventBySlug(slug: string): Promise<EventFull | null> {
       highlights
     }`,
     { slug }
+  );
+}
+
+// Ad Slots
+export interface AdSlotData {
+  _id: string;
+  position: string;
+  label: string;
+  active: boolean;
+  sponsorName?: string;
+  sponsorLogo?: SanityImage;
+  headline?: string;
+  body?: string;
+  ctaLabel?: string;
+  ctaUrl?: string;
+  customHtml?: string;
+  startDate?: string;
+  endDate?: string;
+}
+
+export async function getAdSlot(position: string): Promise<AdSlotData | null> {
+  return sanityClient.fetch(
+    `*[_type == "adSlot" && position == $position && active == true][0] {
+      _id, position, label, active, sponsorName,
+      sponsorLogo { ..., asset-> },
+      headline, body, ctaLabel, ctaUrl, customHtml,
+      startDate, endDate
+    }`,
+    { position }
+  );
+}
+
+// Sponsors
+export interface Sponsor {
+  _id: string;
+  name: string;
+  url?: string;
+  tier: "title" | "gold" | "silver" | "community";
+  description?: string;
+  logo?: SanityImage;
+  featuredOnHome?: boolean;
+}
+
+const SPONSOR_FIELDS = `_id, name, url, tier, description, featuredOnHome, logo { ..., asset-> }`;
+
+export async function getActiveSponsors(): Promise<Sponsor[]> {
+  return sanityClient.fetch(
+    `*[_type == "sponsor" && active == true] | order(tier asc, name asc) { ${SPONSOR_FIELDS} }`
+  );
+}
+
+export async function getHomepageSponsors(): Promise<Sponsor[]> {
+  return sanityClient.fetch(
+    `*[_type == "sponsor" && active == true && featuredOnHome == true] | order(tier asc) { ${SPONSOR_FIELDS} }`
   );
 }
 

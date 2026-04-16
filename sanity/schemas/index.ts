@@ -1,11 +1,12 @@
-import { blogPost }   from "./blogPost";
-import { blogSeries } from "./blogSeries";
-import { customBuild } from "./customBuild";
-import { event }      from "./event";
-import { product }    from "./product";
-import { subscriber } from "./subscriber";
-import { sponsor }    from "./sponsor";
-import { adSlot }     from "./adSlot";
+import { blogPost }            from "./blogPost";
+import { blogSeries }          from "./blogSeries";
+import { customBuild }         from "./customBuild";
+import { event }               from "./event";
+import { product }             from "./product";
+import { subscriber }          from "./subscriber";
+import { sponsor }             from "./sponsor";
+import { adSlot }              from "./adSlot";
+import { partnershipInquiry }  from "./partnershipInquiry";
 
 export const schemaTypes = [
   // Content
@@ -19,4 +20,5 @@ export const schemaTypes = [
   // Monetization
   sponsor,
   adSlot,
+  partnershipInquiry,
 ];

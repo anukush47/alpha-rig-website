@@ -2,6 +2,7 @@ import Hero from "@/components/sections/Hero";
 import FeaturedBuild from "@/components/sections/FeaturedBuild";
 import EventsTicker from "@/components/sections/EventsTicker";
 import BlogPreview from "@/components/sections/BlogPreview";
+import SponsorBar from "@/components/sections/SponsorBar";
 import NewsletterStrip from "@/components/sections/NewsletterStrip";
 
 export default function Home() {
@@ -11,6 +12,7 @@ export default function Home() {
       <FeaturedBuild />
       <EventsTicker />
       <BlogPreview />
+      <SponsorBar />
       <NewsletterStrip />
     </main>
   );
