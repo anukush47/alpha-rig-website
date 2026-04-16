@@ -3,6 +3,10 @@ import { Bebas_Neue, Rajdhani, Space_Mono } from "next/font/google";
 import Script from "next/script";
 import SiteShell from "@/components/layout/SiteShell";
 import PageLoader from "@/components/ui/PageLoader";
+import SmoothScrollProvider from "@/components/ui/SmoothScrollProvider";
+import FilmGrain from "@/components/ui/FilmGrain";
+import GameCursor from "@/components/ui/GameCursor";
+import PageTransition from "@/components/ui/PageTransition";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { GoogleTagManagerHead, GoogleTagManagerBody } from "@/components/analytics/GoogleTagManager";
 import { Analytics } from "@vercel/analytics/react";
@@ -60,14 +64,12 @@ export const metadata: Metadata = {
     title: "Alpha Rig | Custom PCs · Esports Events · PC Culture India",
     description:
       "Alpha Rig Private Limited — Custom-built gaming PCs, professional esports events, PC hardware blog, and online store. Based in Chhindwara, Madhya Pradesh, India.",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Alpha Rig" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Alpha Rig | Custom PCs · Esports Events · PC Culture India",
     description:
       "Alpha Rig Private Limited — Custom-built gaming PCs, professional esports events, and PC hardware. Based in Chhindwara, Madhya Pradesh, India.",
-    images: ["/og-image.jpg"],
   },
   robots: {
     index: true,
@@ -117,8 +119,16 @@ export default function RootLayout({
             }),
           }}
         />
+        {/* Film grain overlay — sits above everything, pointer-events:none */}
+        <FilmGrain />
+        {/* Gaming crosshair cursor — activates only on hover+fine pointer devices */}
+        <GameCursor />
         <PageLoader />
-        <SiteShell>{children}</SiteShell>
+        <SmoothScrollProvider>
+          <SiteShell>
+            <PageTransition>{children}</PageTransition>
+          </SiteShell>
+        </SmoothScrollProvider>
         <GoogleTagManagerHead />
         <GoogleAnalytics />
         <Analytics />

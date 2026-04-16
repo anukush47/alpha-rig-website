@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import PartnershipForm from "@/components/ui/PartnershipForm";
+import AdvertiseStats from "@/components/sections/AdvertiseStats";
 
 export const metadata: Metadata = {
   title: "Advertise | Alpha Rig",
@@ -10,21 +11,11 @@ export const metadata: Metadata = {
     description: "Put your brand in front of India's most engaged PC hardware community.",
     url: "https://alpharig.in/advertise",
     type: "website",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
   },
   twitter: { card: "summary_large_image", title: "Advertise on Alpha Rig" },
 };
 
 // ─── Static data ──────────────────────────────────────────────────────────────
-
-const STATS = [
-  { value: "10K+",    label: "Monthly Readers"       },
-  { value: "4.2 min", label: "Avg. Time on Article"  },
-  { value: "78%",     label: "India-Based Audience"  },
-  { value: "65%",     label: "Male 18–34 Demographic"},
-  { value: "3.1×",    label: "Avg. Pages per Session"},
-  { value: "82%",     label: "Organic Traffic Share" },
-];
 
 const AD_FORMATS = [
   {
@@ -169,40 +160,9 @@ export default function AdvertisePage() {
           style={{
             maxWidth: "1100px",
             margin: "0 auto",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
-            gap: "40px",
-            textAlign: "center",
           }}
         >
-          {STATS.map((s) => (
-            <div key={s.label}>
-              <p
-                style={{
-                  fontFamily: "var(--font-bebas)",
-                  fontSize: "clamp(36px, 5vw, 52px)",
-                  color: "#fff",
-                  letterSpacing: "0.04em",
-                  margin: "0 0 6px",
-                  lineHeight: 1,
-                }}
-              >
-                {s.value}
-              </p>
-              <p
-                style={{
-                  fontFamily: "var(--font-space-mono)",
-                  fontSize: "10px",
-                  color: "#555",
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  margin: 0,
-                }}
-              >
-                {s.label}
-              </p>
-            </div>
-          ))}
+          <AdvertiseStats />
         </div>
       </section>
 
