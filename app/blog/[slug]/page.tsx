@@ -16,8 +16,7 @@ import { BlogViewTracker } from "./BlogViewTracker";
 import type { TocHeading } from "./TableOfContents";
 import type { TypedObject } from "@portabletext/types";
 import ReadingProgress from "@/components/ui/ReadingProgress";
-import ShareBar from "@/components/ui/ShareBar";
-import ClapButton from "@/components/ui/ClapButton";
+import StickyArticleActions from "@/components/ui/StickyArticleActions";
 import AuthorCard from "@/components/ui/AuthorCard";
 import NewsletterInline from "@/components/ui/NewsletterInline";
 import SponsoredSlot from "@/components/ui/SponsoredSlot";
@@ -822,8 +821,12 @@ export default async function BlogPostPage({
             alignItems: "start",
           }}
         >
-          {/* Share bar column */}
-          <ShareBar title={post.title} />
+          {/* Sticky share + clap column */}
+          <StickyArticleActions
+            title={post.title}
+            slug={post.slug.current}
+            initialLikes={post.likes ?? 0}
+          />
 
           {/* Article body */}
           <article style={{ minWidth: 0 }}>
@@ -865,43 +868,6 @@ export default async function BlogPostPage({
 
             {/* Author card */}
             <AuthorCard name={post.author} bio={post.authorBio} />
-
-            {/* Clap row */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "12px",
-                padding: "48px 0 16px",
-                borderTop: "1px solid rgba(255,255,255,0.04)",
-                marginTop: "40px",
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: "var(--font-space-mono)",
-                  fontSize: "10px",
-                  color: "#444",
-                  letterSpacing: "0.15em",
-                  textTransform: "uppercase",
-                  margin: 0,
-                }}
-              >
-                Did this help you?
-              </p>
-              <ClapButton slug={post.slug.current} initialLikes={post.likes ?? 0} />
-              <p
-                style={{
-                  fontFamily: "var(--font-rajdhani)",
-                  fontSize: "14px",
-                  color: "#333",
-                  margin: 0,
-                }}
-              >
-                Tap to clap — you can clap more than once
-              </p>
-            </div>
           </article>
 
           {/* Right sidebar: ToC + Trending */}
