@@ -28,10 +28,13 @@ export default function SmoothScrollProvider({
     if (prefersReduced) return;
 
     const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      // 0.72s keeps smoothness without the scrollbar visibly lagging behind input.
+      // The original 1.1s was too slow — scrollbar trailed the wheel by >1 second.
+      duration: 0.72,
+      easing: (t: number) => 1 - Math.pow(1 - t, 4), // quartic ease-out: fast start, soft landing
       smoothWheel: true,
-      touchMultiplier: 1.5,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.2,
     });
 
     lenisRef.current = lenis;
