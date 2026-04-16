@@ -216,8 +216,8 @@ export default function Hero() {
         className="relative z-10 mx-auto w-full px-6"
         style={{ maxWidth: "1200px" }}
       >
-        {/* Two-column grid: text left, creature right */}
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[3fr_2fr] lg:items-center lg:gap-8">
+        {/* Two-column grid: text left, creature right — equal split */}
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-6">
 
           {/* ── LEFT: text content ── */}
           <div className="flex flex-col gap-8 order-1 lg:order-1">
@@ -299,7 +299,7 @@ export default function Hero() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1.0, delay: 0.3, ease: "easeOut" }}
             layout={false}
-            style={{ maxWidth: "520px", marginLeft: "auto" }}
+            style={{ marginLeft: "auto" }}
           >
             <CreatureViewer />
           </motion.div>
