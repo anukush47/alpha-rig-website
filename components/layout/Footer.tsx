@@ -4,10 +4,11 @@ import { useRef } from "react";
 import Link from "next/link";
 
 const QUICK_LINKS = [
-  { label: "Home",   href: "/" },
-  { label: "Builds", href: "/builds" },
-  { label: "Events", href: "/events" },
-  { label: "Blog",   href: "/blog" },
+  { label: "Home",         href: "/"             },
+  { label: "Builds",       href: "/builds"        },
+  { label: "Events",       href: "/events"        },
+  { label: "Hall of Fame", href: "/hall-of-fame"  },
+  { label: "Blog",         href: "/blog"          },
 ];
 
 const VERTICALS = [

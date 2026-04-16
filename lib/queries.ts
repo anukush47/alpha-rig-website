@@ -77,10 +77,39 @@ export interface EventSummary {
   coverImage?: SanityImage;
 }
 
+export interface EventResult {
+  place: number;
+  teamName: string;
+  prize?: string;
+  note?: string;
+}
+
+export interface EventLeaderboardRow {
+  rank: number;
+  player: string;
+  team?: string;
+  kills?: number;
+  score?: number;
+}
+
+export interface EventSponsor {
+  name: string;
+  logo?: SanityImage;
+  url?: string;
+  tier: string;
+}
+
 export interface EventFull extends EventSummary {
   description: string;
   registrationLink?: string;
   highlights?: string;
+  registrationOpen?: boolean;
+  maxTeams?: number;
+  results?: EventResult[];
+  leaderboard?: EventLeaderboardRow[];
+  recapVideoUrl?: string;
+  recapGallery?: SanityImage[];
+  eventSponsors?: EventSponsor[];
 }
 
 // Product
@@ -230,9 +259,27 @@ export async function getEventBySlug(slug: string): Promise<EventFull | null> {
       ${EVENT_SUMMARY},
       description,
       registrationLink,
-      highlights
+      highlights,
+      registrationOpen,
+      maxTeams,
+      results[]{ place, teamName, prize, note },
+      leaderboard[]{ rank, player, team, kills, score },
+      recapVideoUrl,
+      recapGallery[]{ ..., asset-> },
+      eventSponsors[]{ name, url, tier, logo{ ..., asset-> } }
     }`,
     { slug }
+  );
+}
+
+export async function getCompletedEventsWithResults(): Promise<EventFull[]> {
+  return sanityClient.fetch(
+    `*[_type == "event" && status == "completed" && defined(results)] | order(eventDate desc) {
+      ${EVENT_SUMMARY},
+      description,
+      highlights,
+      results[]{ place, teamName, prize, note }
+    }`
   );
 }
 

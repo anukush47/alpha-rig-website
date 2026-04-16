@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import CountdownTimer from "@/components/ui/CountdownTimer";
 import EventCard from "@/components/ui/EventCard";
@@ -55,6 +56,79 @@ function PastCard({ event }: { event: EventFull }) {
   );
 }
 
+function RegisterInterestForm() {
+  const [form, setForm] = useState({ name: "", email: "", game: "" });
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const set = (f: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setForm((prev) => ({ ...prev, [f]: e.target.value }));
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.email) return;
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: form.email.trim(),
+          source: "events-interest",
+          tags: ["events", form.game].filter(Boolean),
+        }),
+      });
+      setStatus(res.ok ? "success" : "error");
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  if (status === "success") {
+    return (
+      <div style={{ padding: "24px", border: "1px solid #C0392B", background: "#0d0d0d", textAlign: "center" }}>
+        <p style={{ fontFamily: "var(--font-bebas)", fontSize: "22px", color: "#C0392B", letterSpacing: "0.08em", margin: 0 }}>
+          YOU&apos;RE ON THE LIST
+        </p>
+        <p style={{ fontFamily: "var(--font-rajdhani)", fontSize: "14px", color: "#555", margin: "6px 0 0" }}>
+          We&apos;ll notify you when registration opens.
+        </p>
+      </div>
+    );
+  }
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%", background: "#0A0A0A", border: "1px solid #1e1e1e",
+    color: "#e0e0e0", padding: "10px 12px", fontFamily: "var(--font-rajdhani)",
+    fontSize: "14px", outline: "none", boxSizing: "border-box",
+  };
+
+  return (
+    <div style={{ border: "1px solid #1e1e1e", borderTop: "3px solid #C0392B", background: "#0d0d0d", padding: "24px" }}>
+      <p style={{ fontFamily: "var(--font-space-mono)", fontSize: "9px", color: "#C0392B", letterSpacing: "0.2em", textTransform: "uppercase", margin: "0 0 6px" }}>
+        Get Notified
+      </p>
+      <p style={{ fontFamily: "var(--font-bebas)", fontSize: "20px", color: "#e0e0e0", letterSpacing: "0.06em", margin: "0 0 16px" }}>
+        REGISTER YOUR INTEREST
+      </p>
+      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        <input type="text" value={form.name} onChange={set("name")} placeholder="Your name" style={inputStyle} />
+        <input type="email" required value={form.email} onChange={set("email")} placeholder="Email address *" style={inputStyle} />
+        <input type="text" value={form.game} onChange={set("game")} placeholder="Preferred game (e.g. VALORANT)" style={inputStyle} />
+        {status === "error" && (
+          <p style={{ fontFamily: "var(--font-space-mono)", fontSize: "9px", color: "#E74C3C", margin: 0 }}>ERROR — PLEASE TRY AGAIN</p>
+        )}
+        <button
+          type="submit"
+          disabled={status === "loading"}
+          style={{ background: "#C0392B", color: "#fff", border: "none", padding: "12px", fontFamily: "var(--font-bebas)", fontSize: "16px", letterSpacing: "0.1em", cursor: "pointer", marginTop: "4px" }}
+        >
+          {status === "loading" ? "..." : "NOTIFY ME →"}
+        </button>
+      </form>
+    </div>
+  );
+}
+
 function RoleCard({ role, name, description, index }: { role: string; name: string; description: string; index: number }) {
   return (
     <motion.div
@@ -100,10 +174,16 @@ export default function EventsContent({ events }: { events: EventFull[] }) {
                 UPCOMING EVENTS
               </h2>
             </motion.div>
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-              {upcoming.map((event, i) => (
-                <EventCard key={event._id} event={event} index={i} />
-              ))}
+            {/* Grid + interest form sidebar */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 300px", gap: "32px", alignItems: "start" }} className="events-grid-sidebar">
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2" style={{ gridColumn: undefined }}>
+                {upcoming.map((event, i) => (
+                  <EventCard key={event._id} event={event} index={i} />
+                ))}
+              </div>
+              <div className="events-interest-sidebar">
+                <RegisterInterestForm />
+              </div>
             </div>
           </div>
         </section>
@@ -114,10 +194,20 @@ export default function EventsContent({ events }: { events: EventFull[] }) {
         <section className="w-full py-20" style={{ background: "#080808", borderTop: "1px solid #111" }}>
           <div className="mx-auto px-6 mb-10" style={{ maxWidth: "1200px" }}>
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-              <p style={{ fontFamily: "var(--font-mono)", fontSize: "10px", letterSpacing: "4px", color: "#C0392B", marginBottom: "12px" }}>// BATTLE HISTORY</p>
-              <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px, 5vw, 56px)", color: "#ffffff", letterSpacing: "0.02em", lineHeight: 0.95 }}>
-                WAR CHRONICLES
-              </h2>
+              <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
+                <div>
+                  <p style={{ fontFamily: "var(--font-mono)", fontSize: "10px", letterSpacing: "4px", color: "#C0392B", marginBottom: "12px" }}>// BATTLE HISTORY</p>
+                  <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px, 5vw, 56px)", color: "#ffffff", letterSpacing: "0.02em", lineHeight: 0.95 }}>
+                    WAR CHRONICLES
+                  </h2>
+                </div>
+                <Link
+                  href="/hall-of-fame"
+                  style={{ fontFamily: "var(--font-mono)", fontSize: "10px", letterSpacing: "2px", color: "#E8C547", textDecoration: "none", border: "1px solid rgba(232,197,71,0.3)", padding: "10px 18px", borderRadius: "4px", whiteSpace: "nowrap" }}
+                >
+                  🏆 HALL OF FAME →
+                </Link>
+              </div>
             </motion.div>
           </div>
           <div className="mx-auto pl-6" style={{ maxWidth: "1200px", overflowX: "auto", paddingBottom: "16px" }}>
@@ -137,6 +227,13 @@ export default function EventsContent({ events }: { events: EventFull[] }) {
           <p style={{ fontFamily: "var(--font-body)", fontSize: "14px", color: "#444", marginTop: "12px" }}>Add events in the Sanity Studio to see them here.</p>
         </section>
       )}
+
+      <style>{`
+        @media (max-width: 900px) {
+          .events-grid-sidebar { grid-template-columns: 1fr !important; }
+          .events-interest-sidebar { display: none; }
+        }
+      `}</style>
 
       {/* ── TEAM SECTION ── */}
       <section className="w-full py-20" style={{ background: "#0A0A0A", borderTop: "1px solid #111" }}>
