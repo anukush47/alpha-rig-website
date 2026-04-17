@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Rajdhani, Space_Mono } from "next/font/google";
 import Script from "next/script";
+import { ClerkProvider } from "@clerk/nextjs";
 import SiteShell from "@/components/layout/SiteShell";
 import PageLoader from "@/components/ui/PageLoader";
 import SmoothScrollProvider from "@/components/ui/SmoothScrollProvider";
@@ -84,6 +85,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <ClerkProvider
+      afterSignOutUrl="/"
+      appearance={{
+        variables: {
+          colorPrimary:       "#c0392b",
+          colorBackground:    "#111111",
+          colorText:          "#ffffff",
+          colorTextSecondary: "#888888",
+          borderRadius:       "6px",
+        },
+      }}
+    >
     <html
       lang="en"
       className={`${bebasNeue.variable} ${rajdhani.variable} ${spaceMono.variable}`}
@@ -141,5 +154,6 @@ export default function RootLayout({
         />
       </body>
     </html>
+    </ClerkProvider>
   );
 }

@@ -87,6 +87,16 @@ export default defineConfig({
                   .title("Audience")
                   .items([
                     S.listItem()
+                      .title("User Profiles")
+                      .icon(() => "🎮")
+                      .child(
+                        S.documentList()
+                          .title("User Profiles")
+                          .filter('_type == "userProfile"')
+                          .defaultOrdering([{ field: "createdAt", direction: "desc" }])
+                      ),
+                    S.divider(),
+                    S.listItem()
                       .title("Subscribers")
                       .icon(() => "✉️")
                       .child(
@@ -104,6 +114,46 @@ export default defineConfig({
                           .title("Event Registrations")
                           .filter('_type == "eventRegistration"')
                           .defaultOrdering([{ field: "registeredAt", direction: "desc" }])
+                      ),
+                    S.divider(),
+                    S.listItem()
+                      .title("Orders")
+                      .icon(() => "📦")
+                      .child(
+                        S.documentList()
+                          .title("Orders")
+                          .filter('_type == "userOrder"')
+                          .defaultOrdering([{ field: "createdAt", direction: "desc" }])
+                      ),
+                    S.divider(),
+                    S.listItem()
+                      .title("Wishlists")
+                      .icon(() => "♡")
+                      .child(
+                        S.documentList()
+                          .title("Wishlist Items")
+                          .filter('_type == "wishlistItem"')
+                          .defaultOrdering([{ field: "addedAt", direction: "desc" }])
+                      ),
+                    S.divider(),
+                    S.listItem()
+                      .title("Saved Builds")
+                      .icon(() => "🖥️")
+                      .child(
+                        S.documentList()
+                          .title("Saved Builds")
+                          .filter('_type == "savedBuild"')
+                          .defaultOrdering([{ field: "createdAt", direction: "desc" }])
+                      ),
+                    S.divider(),
+                    S.listItem()
+                      .title("Alpha Points Ledger")
+                      .icon(() => "✦")
+                      .child(
+                        S.documentList()
+                          .title("Alpha Points")
+                          .filter('_type == "alphaPoints"')
+                          .defaultOrdering([{ field: "createdAt", direction: "desc" }])
                       ),
                   ])
               ),

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth, UserButton, SignInButton } from "@clerk/nextjs";
 
 const NAV_LINKS = [
   { label: "Builds", href: "/builds" },
@@ -15,20 +16,18 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { isSignedIn } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile menu on route change
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
+  useEffect(() => { setMobileOpen(false); }, [pathname]);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -36,7 +35,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Navbar */}
       <motion.header
         className="fixed top-0 left-0 right-0 z-50 px-4"
         initial={{ y: -80, opacity: 0 }}
@@ -49,8 +47,6 @@ export default function Navbar() {
             maxWidth: "1200px",
             marginTop: "16px",
             borderRadius: "12px",
-            // Fixed blur value — never changes, so GPU doesn't re-composite on scroll.
-            // Use background-color opacity transition for the "scrolled" state instead.
             backdropFilter: "blur(28px)",
             WebkitBackdropFilter: "blur(28px)",
             background: scrolled ? "rgba(10,10,10,0.75)" : "rgba(10,10,10,0.4)",
@@ -81,7 +77,7 @@ export default function Navbar() {
                 <li key={href}>
                   <Link
                     href={href}
-                    className="relative transition-colors duration-200 group"
+                    className="relative transition-colors duration-200"
                     style={{
                       fontFamily: "var(--font-body)",
                       fontWeight: 600,
@@ -107,9 +103,79 @@ export default function Navbar() {
             })}
           </ul>
 
-          {/* Right — CTA + hamburger */}
+          {/* Right — auth + CTA + hamburger */}
           <div className="flex items-center gap-3">
-            {/* Visit Store button — desktop */}
+
+            {/* Signed-out: Sign In — desktop */}
+            {!isSignedIn && (
+              <SignInButton mode="redirect">
+                <button
+                  className="hidden md:inline-flex items-center px-4 py-2 transition-all duration-200"
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontWeight: 700,
+                    fontSize: "13px",
+                    letterSpacing: "0.06em",
+                    color: "#888",
+                    borderRadius: "8px",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    background: "transparent",
+                    cursor: "pointer",
+                  }}
+                  onMouseEnter={(e) => {
+                    const el = e.currentTarget as HTMLElement;
+                    el.style.color = "#fff";
+                    el.style.borderColor = "rgba(255,255,255,0.2)";
+                  }}
+                  onMouseLeave={(e) => {
+                    const el = e.currentTarget as HTMLElement;
+                    el.style.color = "#888";
+                    el.style.borderColor = "rgba(255,255,255,0.08)";
+                  }}
+                >
+                  SIGN IN
+                </button>
+              </SignInButton>
+            )}
+
+            {/* Signed-in: UserButton only — avatar click opens menu with account link */}
+            {isSignedIn && (
+              <div className="hidden md:flex items-center">
+                <UserButton
+                  appearance={{
+                    variables: {
+                      colorBackground:    "#111111",
+                      colorText:          "#ffffff",
+                      colorTextSecondary: "#888888",
+                      colorPrimary:       "#c0392b",
+                      borderRadius:       "8px",
+                    },
+                    elements: {
+                      avatarBox:               "w-9 h-9 ring-2 ring-[#c0392b]/60 ring-offset-1 ring-offset-black",
+                      userButtonPopoverCard:    "!bg-[#111] !border !border-white/[0.07] !shadow-2xl !w-[260px] !min-w-0",
+                      userButtonPopoverMain:    "!bg-transparent",
+                      userButtonPopoverActions: "!bg-transparent",
+                      userButtonPopoverFooter:  "!bg-[#0d0d0d] !border-t !border-white/[0.05]",
+                      userPreviewMainIdentifier:"!text-white !font-semibold",
+                      userPreviewSecondaryIdentifier: "!text-[#555]",
+                      userButtonPopoverActionButton: "!text-[#888] hover:!text-white hover:!bg-white/[0.04] !transition-colors",
+                      userButtonPopoverActionButtonText: "!text-inherit",
+                      userButtonPopoverActionButtonIcon: "!text-[#444]",
+                    },
+                  }}
+                >
+                  <UserButton.MenuItems>
+                    <UserButton.Link
+                      href="/account"
+                      label="My Account"
+                      labelIcon={<span style={{ fontSize: 13 }}>⬡</span>}
+                    />
+                  </UserButton.MenuItems>
+                </UserButton>
+              </div>
+            )}
+
+            {/* Visit Store — desktop */}
             <Link
               href="/store"
               className="hidden md:inline-flex items-center px-4 py-2 text-sm transition-all duration-200"
@@ -146,24 +212,12 @@ export default function Navbar() {
               onClick={() => setMobileOpen((v) => !v)}
               aria-label="Toggle menu"
             >
-              <motion.span
-                className="block h-px w-6 origin-center"
-                style={{ background: "#ffffff" }}
-                animate={mobileOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-                transition={{ duration: 0.25 }}
-              />
-              <motion.span
-                className="block h-px w-6"
-                style={{ background: "#ffffff" }}
-                animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }}
-                transition={{ duration: 0.25 }}
-              />
-              <motion.span
-                className="block h-px w-6 origin-center"
-                style={{ background: "#ffffff" }}
-                animate={mobileOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-                transition={{ duration: 0.25 }}
-              />
+              <motion.span className="block h-px w-6 origin-center" style={{ background: "#ffffff" }}
+                animate={mobileOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }} transition={{ duration: 0.25 }} />
+              <motion.span className="block h-px w-6" style={{ background: "#ffffff" }}
+                animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }} transition={{ duration: 0.25 }} />
+              <motion.span className="block h-px w-6 origin-center" style={{ background: "#ffffff" }}
+                animate={mobileOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }} transition={{ duration: 0.25 }} />
             </button>
           </div>
         </nav>
@@ -184,28 +238,20 @@ export default function Navbar() {
               background: "rgba(10,10,10,0.92)",
             }}
           >
-            {/* Push content below navbar height */}
             <div className="mt-24 flex flex-col items-center justify-center flex-1 gap-8 pb-16">
               {NAV_LINKS.map(({ label, href }, i) => {
                 const active = pathname === href || pathname.startsWith(href + "/");
                 return (
-                  <motion.div
-                    key={href}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ delay: i * 0.07, duration: 0.3 }}
+                  <motion.div key={href}
+                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }} transition={{ delay: i * 0.07, duration: 0.3 }}
                   >
-                    <Link
-                      href={href}
-                      className="block text-center"
-                      style={{
-                        fontFamily: "var(--font-display)",
-                        fontSize: "clamp(32px, 8vw, 48px)",
-                        letterSpacing: "0.05em",
-                        color: active ? "#C0392B" : "#ffffff",
-                      }}
-                    >
+                    <Link href={href} className="block text-center" style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: "clamp(32px, 8vw, 48px)",
+                      letterSpacing: "0.05em",
+                      color: active ? "#C0392B" : "#ffffff",
+                    }}>
                       {label.toUpperCase()}
                     </Link>
                   </motion.div>
@@ -213,26 +259,51 @@ export default function Navbar() {
               })}
 
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                 transition={{ delay: NAV_LINKS.length * 0.07, duration: 0.3 }}
+                style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}
               >
-                <Link
-                  href="/store"
-                  className="inline-flex items-center px-8 py-3 mt-4"
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontWeight: 700,
-                    fontSize: "14px",
-                    letterSpacing: "0.08em",
-                    color: "#ffffff",
-                    background: "#C0392B",
-                    borderRadius: "8px",
-                  }}
-                >
+                <Link href="/store" className="inline-flex items-center px-8 py-3" style={{
+                  fontFamily: "var(--font-body)",
+                  fontWeight: 700,
+                  fontSize: "14px",
+                  letterSpacing: "0.08em",
+                  color: "#ffffff",
+                  background: "#C0392B",
+                  borderRadius: "8px",
+                }}>
                   VISIT STORE
                 </Link>
+
+                {!isSignedIn ? (
+                  <SignInButton mode="redirect">
+                    <button style={{
+                      fontFamily: "var(--font-space-mono)",
+                      fontSize: "11px",
+                      letterSpacing: "0.15em",
+                      color: "#888",
+                      background: "transparent",
+                      border: "1px solid rgba(255,255,255,0.1)",
+                      borderRadius: "8px",
+                      padding: "10px 24px",
+                      cursor: "pointer",
+                      textTransform: "uppercase",
+                    }}>
+                      Sign In
+                    </button>
+                  </SignInButton>
+                ) : (
+                  <Link href="/account" style={{
+                    fontFamily: "var(--font-space-mono)",
+                    fontSize: "11px",
+                    letterSpacing: "0.15em",
+                    color: "#c0392b",
+                    textDecoration: "none",
+                    textTransform: "uppercase",
+                  }}>
+                    My Account →
+                  </Link>
+                )}
               </motion.div>
             </div>
           </motion.div>

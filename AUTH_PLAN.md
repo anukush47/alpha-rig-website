@@ -71,11 +71,10 @@ ALPHA      ██████████   10,000+          Dragon-fire red + g
 **Point earn rules:**
 | Action | Points |
 |---|---|
-| Purchase (per ₹10 spent) | 1 pt |
+| Purchase (per ₹100 spent) | 1 pt |
 | Event registration | 50 pt |
 | PC counseling session | 100 pt |
-| Newsletter signup | 20 pt |
-| Blog article read (first read per article) | 2 pt |
+| Newsletter signup | 10 pt |
 | Referral (new user signs up via your link) | 200 pt |
 | First purchase ever | +100 pt bonus |
 | Profile fully completed | 25 pt |

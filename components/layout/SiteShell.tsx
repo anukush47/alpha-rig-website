@@ -8,8 +8,9 @@ import CartDrawer from "@/components/ui/CartDrawer";
 export default function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isStudio = pathname?.startsWith("/studio");
+  const isAuthPage = pathname?.startsWith("/sign-in") || pathname?.startsWith("/sign-up");
 
-  if (isStudio) return <>{children}</>;
+  if (isStudio || isAuthPage) return <>{children}</>;
 
   return (
     <>

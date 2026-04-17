@@ -8,6 +8,7 @@ import { useCursorGlow } from "@/lib/useCursorGlow";
 import { useCartStore } from "@/lib/store";
 import { urlFor } from "@/lib/sanity";
 import type { ProductSummary } from "@/lib/queries";
+import WishlistButton from "@/components/ui/WishlistButton";
 
 function fmtPrice(n: number) {
   return "₹" + n.toLocaleString("en-IN");
@@ -171,6 +172,18 @@ export default function ProductCard({
             </span>
           </Link>
         )}
+
+        {/* Wishlist button — top right */}
+        <div className="absolute top-3 right-3 z-20">
+          <WishlistButton
+            productId={product._id}
+            productName={product.name}
+            productSlug={slug}
+            price={product.price}
+            imageUrl={imgUrl}
+            size="sm"
+          />
+        </div>
 
         {/* Badges */}
         <div className="absolute top-3 left-3 z-20 flex flex-col gap-1">
